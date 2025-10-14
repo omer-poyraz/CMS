@@ -1,0 +1,77 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/correspondence-with-a-dietitian-20250814115346-8168.png",
+      "PackagePath": "staticwebassets/Media/correspondence-with-a-dietitian-20250814115346-8168.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/dark-logo-20250814080934-49293.png",
+      "PackagePath": "staticwebassets/Media/dark-logo-20250814080934-49293.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/leaf-icon-20250815075228-38075.png",
+      "PackagePath": "staticwebassets/Media/leaf-icon-20250815075228-38075.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/meals-20250814113916-69147.png",
+      "PackagePath": "staticwebassets/Media/meals-20250814113916-69147.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/onboard1-20250814081012-93287.png",
+      "PackagePath": "staticwebassets/Media/onboard1-20250814081012-93287.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/onboard2-20250814081253-14746.png",
+      "PackagePath": "staticwebassets/Media/onboard2-20250814081253-14746.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/onboard3-20250814081350-90479.png",
+      "PackagePath": "staticwebassets/Media/onboard3-20250814081350-90479.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/profile-1-20250814121014-56668.png",
+      "PackagePath": "staticwebassets/Media/profile-1-20250814121014-56668.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/profile-2-20250814121109-97870.png",
+      "PackagePath": "staticwebassets/Media/profile-2-20250814121109-97870.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/sport-20250814114618-16292.png",
+      "PackagePath": "staticwebassets/Media/sport-20250814114618-16292.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/total-weight-loss-20250814114828-81458.png",
+      "PackagePath": "staticwebassets/Media/total-weight-loss-20250814114828-81458.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/water-consumption-20250814114352-27458.png",
+      "PackagePath": "staticwebassets/Media/water-consumption-20250814114352-27458.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/weight-loss-chart-20250814113232-76038.png",
+      "PackagePath": "staticwebassets/Media/weight-loss-chart-20250814113232-76038.png"
+    },
+    {
+      "Id": "/Users/dev1/Desktop/omer/api/API/wwwroot/Media/yellow-logo-20250814110355-38959.png",
+      "PackagePath": "staticwebassets/Media/yellow-logo-20250814110355-38959.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.API.props",
+      "PackagePath": "build\\API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.API.props",
+      "PackagePath": "buildMultiTargeting\\API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.API.props",
+      "PackagePath": "buildTransitive\\API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
