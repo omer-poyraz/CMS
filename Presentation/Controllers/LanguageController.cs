@@ -160,7 +160,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.LanguageService.CreateLanguageAsync(languageDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<LanguageDto>.CreateSuccess(_httpContextAccessor, content, "Success.Created"));
             }
             catch (Exception ex)
@@ -203,7 +202,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.LanguageService.UpdateLanguageAsync(languageDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<LanguageDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception ex)
@@ -238,7 +236,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.LanguageService.DeleteLanguageAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<LanguageDto>.CreateSuccess(_httpContextAccessor, content, "Success.Deleted"));
             }
             catch (Exception ex)

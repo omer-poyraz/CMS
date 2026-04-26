@@ -9,8 +9,6 @@ namespace Entities.Models
         public string? LastName { get; set; }
         public string? RefreshToken { get; set; }
         public bool? Active { get; set; }
-        public bool? IsMeal { get; set; }
-        public int? ProductID { get; set; }
         public DateTime RefreshTokenExpireTime { get; set; }
         public List<IdentityRole>? Roles { get; set; }
         public DateTime? CreatedAt { get; set; }

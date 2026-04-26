@@ -203,7 +203,6 @@ namespace Presentation.Controllers
                     mediaUploadDtoForInsertion.FileUrl = uploadResults.FirstOrDefault()?["FilesFullPath"]?.ToString() ?? string.Empty;
                 }
                 var content = await _manager.FilesService.CreateFilesAsync(mediaUploadDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<FilesDto>.CreateSuccess(_httpContextAccessor, content, "Success.Created"));
             }
             catch (Exception ex)
@@ -255,7 +254,6 @@ namespace Presentation.Controllers
                     mediaUploadDtoForUpdate.FileUrl = uploadResults.FirstOrDefault()?["FilesFullPath"]?.ToString() ?? string.Empty;
                 }
                 var content = await _manager.FilesService.UpdateFilesAsync(mediaUploadDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<FilesDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception ex)
@@ -290,7 +288,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.FilesService.DeleteFilesAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<FilesDto>.CreateSuccess(_httpContextAccessor, content, "Success.Deleted"));
             }
             catch (Exception ex)

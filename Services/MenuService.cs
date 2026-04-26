@@ -10,7 +10,7 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
 
-        public MenuService(IRepositoryManager manager,IMapper mapper)
+        public MenuService(IRepositoryManager manager, IMapper mapper)
         {
             _manager = manager;
             _mapper = mapper;
@@ -32,15 +32,15 @@ namespace Services
             return _mapper.Map<MenuDto>(menu);
         }
 
-        public async Task<IEnumerable<MenuDto>> GetAllMenusAsync(bool? trackChanges)
+        public async Task<IEnumerable<MenuDto>> GetAllMenusAsync(string lang, bool? trackChanges)
         {
-            var menu = await _manager.MenuRepository.GetAllMenusAsync(trackChanges);
+            var menu = await _manager.MenuRepository.GetAllMenusAsync(lang, trackChanges);
             return _mapper.Map<IEnumerable<MenuDto>>(menu);
         }
 
-        public async Task<IEnumerable<MenuDto>> GetAllMenusByGroupAsync(int id, bool? trackChanges)
+        public async Task<IEnumerable<MenuDto>> GetAllMenusByGroupAsync(int id, string lang, bool? trackChanges)
         {
-            var menu = await _manager.MenuRepository.GetAllMenusByGroupAsync(id, trackChanges);
+            var menu = await _manager.MenuRepository.GetAllMenusByGroupAsync(id, lang, trackChanges);
             return _mapper.Map<IEnumerable<MenuDto>>(menu);
         }
 
@@ -52,7 +52,15 @@ namespace Services
 
         public async Task<MenuDto> SortMenuAsync(int id, int sort, bool? trackChanges)
         {
-            var menu = await _manager.MenuRepository.SortMenuAsync(id, sort, trackChanges);
+            var menu = await _manager.MenuRepository.GetMenuByIdAsync(id, trackChanges);
+            var sortMenu = await _manager.MenuRepository.GetMenuBySortAsync(sort, trackChanges);
+            if (sortMenu != null)
+            {
+                sortMenu.Sort = menu.Sort;
+                _manager.MenuRepository.SortMenu(sortMenu);
+            }
+            menu.Sort = sort;
+            _manager.MenuRepository.SortMenu(menu);
             await _manager.SaveAsync();
             return _mapper.Map<MenuDto>(menu);
         }

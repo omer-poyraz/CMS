@@ -120,6 +120,34 @@ namespace Services
             return result;
         }
 
+        public async Task<IdentityResult> RegisterUser(UserForRegisterDto registerDto)
+        {
+            var existingUser = await _userManager.FindByEmailAsync(registerDto.Email!);
+            if (existingUser != null)
+                throw new InvalidOperationException("Bu e-posta ile zaten bir kullanıcı mevcut.");
+
+            var userNameToCheck = registerDto.UserName?.Trim();
+            var userNameExists = !string.IsNullOrEmpty(userNameToCheck) && await _userManager.FindByNameAsync(userNameToCheck) != null;
+            string finalUserName = userNameToCheck ?? string.Empty;
+            if (userNameExists)
+            {
+                var random = new Random();
+                int randomNumber = random.Next(1000, 9999);
+                finalUserName = $"{finalUserName}-{randomNumber}";
+            }
+
+            var user = _mapper.Map<User>(registerDto);
+            user.UserName = finalUserName;
+            user.Active = true;
+            user.EmailConfirmed = true;
+            var result = await _userManager.CreateAsync(user, registerDto.Password!);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRolesAsync(user, registerDto.Roles!);
+            }
+            return result;
+        }
+
         public async Task<bool> ValidUser(UserForAuthenticationDto authenticationDto)
         {
             if (!string.IsNullOrWhiteSpace(authenticationDto.UserName) && authenticationDto.UserName.Contains("@"))

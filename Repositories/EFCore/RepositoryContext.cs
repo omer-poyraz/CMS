@@ -14,9 +14,7 @@ namespace Repositories.EFCore
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public DbSet<Basket> Baskets { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Content> Contents { get; set; }
         public DbSet<Files> Filess { get; set; }
         public DbSet<GoogleAnalytics> GaoogleAnalytics { get; set; }
         public DbSet<Language> Languages { get; set; }
@@ -24,14 +22,13 @@ namespace Repositories.EFCore
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuGroup> MenuGroups { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<PageSection> PageSections { get; set; }
+        public DbSet<PageTranslation> PageTranslations { get; set; }
         public DbSet<Popup> Popups { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<SectionField> SectionFields { get; set; }
+        public DbSet<SectionItem> SectionItems { get; set; }
         public DbSet<Settings> Settings { get; set; }
-        public DbSet<Unit> Units { get; set; }
-        public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<Versioning> Versionings { get; set; }
-        public DbSet<VideoGroup> VideoGroups { get; set; }
-        public DbSet<Video> Videos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

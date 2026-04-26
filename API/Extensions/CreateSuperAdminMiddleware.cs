@@ -28,10 +28,12 @@ namespace API.Extensions
 
             if (userManager != null)
             {
+                var superAdminFirstName = superAdminInfo["FirstName"];
+                var superAdminLastName = superAdminInfo["LastName"];
+                var superAdminPhoneNumber = superAdminInfo["PhoneNumber"];
                 var superAdminUserName = superAdminInfo["UserName"];
                 var superAdminEmail = superAdminInfo["Email"];
                 var superAdminPassword = superAdminInfo["Password"];
-                var superAdminPhone = superAdminInfo["PhoneNumber"];
 
                 if (!string.IsNullOrEmpty(superAdminUserName))
                 {
@@ -40,10 +42,12 @@ namespace API.Extensions
                     {
                         superAdmin = new User
                         {
+                            FirstName = superAdminFirstName,
+                            LastName = superAdminLastName,
+                            PhoneNumber = superAdminPhoneNumber,
                             UserName = superAdminUserName,
                             Email = superAdminEmail,
                             EmailConfirmed = true,
-                            PhoneNumber = superAdminPhone,
                             Active = true
                         };
                         var result = await userManager.CreateAsync(superAdmin, superAdminPassword);
@@ -54,8 +58,15 @@ namespace API.Extensions
                     }
                     else if (superAdmin != null && superAdmin.Active != true)
                     {
-                        // Update existing Super Admin to be active if not already
                         superAdmin.Active = true;
+                        await userManager.UpdateAsync(superAdmin);
+                    }
+                    else if (superAdmin != null && (superAdmin.FirstName != superAdminFirstName || superAdmin.LastName != superAdminLastName || superAdmin.PhoneNumber != superAdminPhoneNumber || superAdmin.Email != superAdminEmail))
+                    {
+                        superAdmin.FirstName = superAdminFirstName;
+                        superAdmin.LastName = superAdminLastName;
+                        superAdmin.PhoneNumber = superAdminPhoneNumber;
+                        superAdmin.Email = superAdminEmail;
                         await userManager.UpdateAsync(superAdmin);
                     }
                 }

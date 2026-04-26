@@ -1,12 +1,10 @@
-﻿using System.Text.Json;
+﻿using Entities.Models;
 
 namespace Entities.DTOs.PageDto
 {
     public abstract record PageDtoForManipulation
     {
-        public JsonDocument? Slug { get; init; }
-        public JsonDocument? Content { get; init; }
-        public int? PopupID { get; init; }
-        public JsonDocument? Meta { get; init; }
+        public List<PageTranslation>? Translations { get; init; } = new();
+        public List<PageSection>? Sections { get; init; } = new();
     }
 }

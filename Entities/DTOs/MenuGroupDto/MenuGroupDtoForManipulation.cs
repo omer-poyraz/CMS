@@ -1,10 +1,9 @@
-﻿using System.Text.Json;
+﻿using Entities.Models;
 
 namespace Entities.DTOs.MenuGroupDto
 {
     public abstract record MenuGroupDtoForManipulation
     {
-        public JsonDocument? Title { get; init; }
-        public JsonDocument? SpecialField { get; init; }
+        public ICollection<MenuGroupTranslation>? Translations { get; init; }
     }
 }

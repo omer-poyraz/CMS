@@ -20,14 +20,16 @@ namespace Repositories.EFCore
             return menuGroup;
         }
 
-        public async Task<IEnumerable<MenuGroup>> GetAllMenuGroupsAsync(bool? trackChanges) =>
+        public async Task<IEnumerable<MenuGroup>> GetAllMenuGroupsAsync(string lang, bool? trackChanges) =>
             await FindAll(trackChanges)
                 .OrderBy(s => s.ID)
+                .Include(s => s.Translations.Where(t => t.Lang == lang))
                 .Include(s => s.Menus)
                 .ToListAsync();
 
-        public async Task<MenuGroup> GetMenuGroupByIdAsync(int id, bool? trackChanges) =>
+        public async Task<MenuGroup> GetMenuGroupByIdAsync(int id, string lang, bool? trackChanges) =>
             await FindByCondition(s => s.ID.Equals(id), trackChanges)
+                .Include(s => s.Translations)
                 .Include(s => s.Menus)
                 .SingleOrDefaultAsync();
 

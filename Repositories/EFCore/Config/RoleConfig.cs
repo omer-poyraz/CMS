@@ -11,7 +11,6 @@ namespace Repositories.EFCore.Config
             builder.HasData(
                 new IdentityRole { Name = "Super Admin", NormalizedName = "SUPER ADMIN" },
                 new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Name = "Dietician", NormalizedName = "DIETICIAN" },
                 new IdentityRole { Name = "User", NormalizedName = "USER" }
             );
         }

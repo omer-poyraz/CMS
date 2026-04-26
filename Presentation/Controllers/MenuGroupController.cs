@@ -1,11 +1,9 @@
-﻿using System.Text.Json;
-using Entities.DTOs.MenuGroupDto;
+﻿using Entities.DTOs.MenuGroupDto;
 using Entities.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
-using Services.Extensions;
 
 namespace Presentation.Controllers
 {
@@ -43,12 +41,12 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtları başarıyla listelendi</response>
         /// <response code="500">Sunucu hatası</response>
         [HttpGet("GetAll")]
-        // [AuthorizePermission("MenuGroup", "Read")]
-        public async Task<IActionResult> GetAllMenuGroupsAsync()
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
+        public async Task<IActionResult> GetAllMenuGroupsAsync([FromQuery] string lang)
         {
             try
             {
-                var contents = await _manager.MenuGroupService.GetAllMenuGroupsAsync(false);
+                var contents = await _manager.MenuGroupService.GetAllMenuGroupsAsync(lang, false);
                 return Ok(ApiResponse<IEnumerable<MenuGroupDto>>.CreateSuccess(_httpContextAccessor, contents, "Success.Listed"));
             }
             catch (Exception ex)
@@ -75,12 +73,11 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtı başarıyla getirildi</response>
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpGet("Get/{id:int}")]
-        // [AuthorizePermission("MenuGroup", "Read")]
-        public async Task<IActionResult> GetOneMenuGroupByIdAsync([FromRoute] int id)
+        public async Task<IActionResult> GetOneMenuGroupByIdAsync([FromRoute] int id, [FromQuery] string lang)
         {
             try
             {
-                var content = await _manager.MenuGroupService.GetMenuGroupByIdAsync(id, false);
+                var content = await _manager.MenuGroupService.GetMenuGroupByIdAsync(id, lang, false);
                 return Ok(ApiResponse<MenuGroupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Retrieved"));
             }
             catch (Exception ex)
@@ -121,14 +118,12 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtı başarıyla oluşturuldu</response>
         /// <response code="400">Geçersiz veri</response>
         [HttpPost("Create")]
-        // [AuthorizePermission("MenuGroup", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> CreateOneMenuGroupAsync([FromBody] MenuGroupDtoForInsertion menuGroupDtoForInsertion)
         {
             try
             {
                 var content = await _manager.MenuGroupService.CreateMenuGroupAsync(menuGroupDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuGroupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Created"));
             }
             catch (Exception ex)
@@ -164,14 +159,12 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtı başarıyla güncellendi</response>
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpPut("Update")]
-        // [AuthorizePermission("MenuGroup", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> UpdateOneMenuGroupAsync([FromBody] MenuGroupDtoForUpdate menuGroupDtoForUpdate)
         {
             try
             {
                 var content = await _manager.MenuGroupService.UpdateMenuGroupAsync(menuGroupDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuGroupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception ex)
@@ -199,14 +192,12 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtı başarıyla silindi</response>
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpDelete("Delete/{id:int}")]
-        // [AuthorizePermission("MenuGroup", "Delete")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> DeleteOneMenuGroupAsync([FromRoute] int id)
         {
             try
             {
                 var content = await _manager.MenuGroupService.DeleteMenuGroupAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuGroupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Deleted"));
             }
             catch (Exception ex)

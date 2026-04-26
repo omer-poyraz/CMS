@@ -128,7 +128,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.PopupService.CreatePopupAsync(popupDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<PopupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Created"));
             }
             catch (Exception ex)
@@ -171,7 +170,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.PopupService.UpdatePopupAsync(popupDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<PopupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception ex)
@@ -206,7 +204,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.PopupService.DeletePopupAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<PopupDto>.CreateSuccess(_httpContextAccessor, content, "Success.Deleted"));
             }
             catch (Exception ex)

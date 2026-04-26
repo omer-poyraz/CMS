@@ -57,7 +57,6 @@ namespace Services
             user.LastName = userDtoForUpdate.LastName;
             user.Email = userDtoForUpdate.Email;
             user.PhoneNumber = userDtoForUpdate.PhoneNumber;
-            user.ProductID = userDtoForUpdate.ProductID;
             user.UpdatedAt = DateTime.UtcNow;
             await _userManager.UpdateAsync(user);
 
@@ -99,7 +98,7 @@ namespace Services
                                             <td align=""center"">
                                                 <h2>Şifre Sıfırlama</h2>
                                                 <p>Merhaba,</p>
-                                                <p>Fit'n Co hesabınız için şifre sıfırlama talebinde bulundunuz.</p>
+                                                <p>North Soft hesabınız için şifre sıfırlama talebinde bulundunuz.</p>
                                                 <p>Eğer bu talepte siz bulunduysanız lütfen aşağıdaki bağlantıya tıklayarak şifrenizi sıfırlayabilirsiniz.</p>
                                                 <!-- Ana Link Butonu -->
                                                 <div onclick=""window.location.href='{deepLink}'"" 
@@ -155,7 +154,6 @@ namespace Services
             var user = await _userManager.FindByEmailAsync(userDto.Email!);
             var name = user!.FirstName + " " + user.LastName;
 
-            user!.IsMeal = isMeal;
             user.UpdatedAt = DateTime.UtcNow;
             await _userManager.UpdateAsync(user);
 

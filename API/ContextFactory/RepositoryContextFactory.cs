@@ -13,7 +13,7 @@ namespace API.ContextFactory
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var build = new DbContextOptionsBuilder<RepositoryContext>().UseNpgsql(config.GetConnectionString("sqlConnection"), prj => prj.MigrationsAssembly("API"));
+            var build = new DbContextOptionsBuilder<RepositoryContext>().UseNpgsql(config.GetConnectionString("DefaultConnection"), prj => prj.MigrationsAssembly("API"));
 
             return new RepositoryContext(build.Options);
         }

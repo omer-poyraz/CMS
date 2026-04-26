@@ -19,7 +19,7 @@ namespace API.Extensions
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<RepositoryContext>(opt =>
-                opt.UseNpgsql(configuration.GetConnectionString("sqlConnection"))
+                opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
         }
 
@@ -31,14 +31,8 @@ namespace API.Extensions
             services.AddSingleton(new FileReaderService());
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
-            services.AddScoped<IBasketRepository, BasketRepository>();
-            services.AddScoped<IBasketService, BasketService>();
-
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
-
-            services.AddScoped<IContentRepository, ContentRepository>();
-            services.AddScoped<IContentService, ContentService>();
 
             services.AddScoped<IFilesRepository, FilesRepository>();
             services.AddScoped<IFilesService, FilesService>();
@@ -61,31 +55,26 @@ namespace API.Extensions
             services.AddScoped<IPageRepository, PageRepository>();
             services.AddScoped<IPageService, PageService>();
 
+            services.AddScoped<IPageTranslationRepository, PageTranslationRepository>();
+            services.AddScoped<IPageTranslationService, PageTranslationService>();
+
+            services.AddScoped<IPageSectionRepository, PageSectionRepository>();
+            services.AddScoped<IPageSectionService, PageSectionService>();
+
             services.AddScoped<IPopupRepository, PopupRepository>();
             services.AddScoped<IPopupService, PopupService>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductService, ProductService>();
+
+            services.AddScoped<ISectionFieldRepository, SectionFieldRepository>();
+            services.AddScoped<ISectionFieldService, SectionFieldService>();
+
+            services.AddScoped<ISectionItemRepository, SectionItemRepository>();
+            services.AddScoped<ISectionItemService, SectionItemService>();
 
             services.AddScoped<ISettingsRepository, SettingsRepository>();
             services.AddScoped<ISettingsService, SettingsService>();
 
-            services.AddScoped<IUnitRepository, UnitRepository>();
-            services.AddScoped<IUnitService, UnitService>();
-
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
-            services.AddScoped<IUserProfileService, UserProfileService>();
-
-            services.AddScoped<IVersioningRepository, VersioningRepository>();
-            services.AddScoped<IVersioningService, VersioningService>();
-
-            services.AddScoped<IVideoRepository, VideoRepository>();
-            services.AddScoped<IVideoService, VideoService>();
-
-            services.AddScoped<IVideoGroupRepository, VideoGroupRepository>();
-            services.AddScoped<IVideoGroupService, VideoGroupService>();
 
 
             services.AddCors(opt =>

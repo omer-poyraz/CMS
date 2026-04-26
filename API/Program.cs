@@ -90,7 +90,7 @@ app.UseStaticFiles(
     new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")
+            Path.Combine(Directory.GetCurrentDirectory(), "./wwwroot/images")
         ),
         RequestPath = "/images",
     }

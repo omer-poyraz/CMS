@@ -8,8 +8,6 @@ namespace Entities.DTOs.UserDto
         public string? LastName { get; init; }
         public string? UserName { get; init; }
         public bool? Active { get; init; }
-        public int? ProductID { get; init; }
-        public bool? IsMeal { get; init; }
         public string? Email { get; init; }
         public string? PhoneNumber { get; init; }
     }

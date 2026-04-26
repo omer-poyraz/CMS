@@ -5,9 +5,7 @@ namespace Repositories.EFCore
     public class RepositoryManager : IRepositoryManager
     {
         private readonly RepositoryContext _context;
-        private readonly IBasketRepository _basketRepository;
         private readonly ICommentRepository _commentRepository;
-        private readonly IContentRepository _contentRepository;
         private readonly IFilesRepository _filesRepository;
         private readonly IGoogleAnalyticsRepository _googleAnalyticsRepository;
         private readonly IMenuRepository _menuRepository;
@@ -15,21 +13,17 @@ namespace Repositories.EFCore
         private readonly ILanguageRepository _languageRepository;
         private readonly ILogRepository _logRepository;
         private readonly IPageRepository _pageRepository;
+        private readonly IPageSectionRepository _pageSectionRepository;
+        private readonly IPageTranslationRepository _pageTranslationRepository;
         private readonly IPopupRepository _popupRepository;
-        private readonly IProductRepository _productRepository;
+        private readonly ISectionFieldRepository _sectionFieldRepository;
+        private readonly ISectionItemRepository _sectionItemRepository;
         private readonly ISettingsRepository _settingsRepository;
-        private readonly IUnitRepository _unitRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IUserProfileRepository _userProfileRepository;
-        private readonly IVersioningRepository _versioningRepository;
-        private readonly IVideoGroupRepository _videoGroupRepository;
-        private readonly IVideoRepository _videoRepository;
 
         public RepositoryManager(
             RepositoryContext context,
-            IBasketRepository basketRepository,
             ICommentRepository commentRepository,
-            IContentRepository contentRepository,
             IFilesRepository filesRepository,
             IGoogleAnalyticsRepository googleAnalyticsRepository,
             IMenuRepository menuRepository,
@@ -37,20 +31,16 @@ namespace Repositories.EFCore
             ILanguageRepository languageRepository,
             ILogRepository logRepository,
             IPageRepository pageRepository,
+            IPageSectionRepository pageSectionRepository,
+            IPageTranslationRepository pageTranslationRepository,
             IPopupRepository popupRepository,
-            IProductRepository productRepository,
+            ISectionFieldRepository sectionFieldRepository,
+            ISectionItemRepository sectionItemRepository,
             ISettingsRepository settingsRepository,
-            IUnitRepository unitRepository,
-            IUserRepository userRepository,
-            IUserProfileRepository userProfileRepository,
-            IVersioningRepository versioningRepository,
-            IVideoGroupRepository videoGroupRepository,
-            IVideoRepository videoRepository)
+            IUserRepository userRepository)
         {
             _context = context;
-            _basketRepository = basketRepository;
             _commentRepository = commentRepository;
-            _contentRepository = contentRepository;
             _filesRepository = filesRepository;
             _googleAnalyticsRepository = googleAnalyticsRepository;
             _menuRepository = menuRepository;
@@ -58,20 +48,16 @@ namespace Repositories.EFCore
             _languageRepository = languageRepository;
             _logRepository = logRepository;
             _pageRepository = pageRepository;
+            _pageSectionRepository = pageSectionRepository;
+            _pageTranslationRepository = pageTranslationRepository;
             _popupRepository = popupRepository;
-            _productRepository = productRepository;
+            _sectionFieldRepository = sectionFieldRepository;
+            _sectionItemRepository = sectionItemRepository;
             _settingsRepository = settingsRepository;
-            _unitRepository = unitRepository;
             _userRepository = userRepository;
-            _userProfileRepository = userProfileRepository;
-            _versioningRepository = versioningRepository;
-            _videoGroupRepository = videoGroupRepository;
-            _videoRepository = videoRepository;
         }
 
-        public IBasketRepository BasketRepository => _basketRepository;
         public ICommentRepository CommentRepository => _commentRepository;
-        public IContentRepository ContentRepository => _contentRepository;
         public IFilesRepository FilesRepository => _filesRepository;
         public IGoogleAnalyticsRepository GoogleAnalyticsRepository => _googleAnalyticsRepository;
         public IMenuRepository MenuRepository => _menuRepository;
@@ -79,15 +65,13 @@ namespace Repositories.EFCore
         public ILanguageRepository LanguageRepository => _languageRepository;
         public ILogRepository LogRepository => _logRepository;
         public IPageRepository PageRepository => _pageRepository;
+        public IPageSectionRepository PageSectionRepository => _pageSectionRepository;
+        public IPageTranslationRepository PageTranslationRepository => _pageTranslationRepository;
         public IPopupRepository PopupRepository => _popupRepository;
-        public IProductRepository ProductRepository => _productRepository;
+        public ISectionFieldRepository SectionFieldRepository => _sectionFieldRepository;
+        public ISectionItemRepository SectionItemRepository => _sectionItemRepository;
         public ISettingsRepository SettingsRepository => _settingsRepository;
-        public IUnitRepository UnitRepository => _unitRepository;
         public IUserRepository UserRepository => _userRepository;
-        public IUserProfileRepository UserProfileRepository => _userProfileRepository;
-        public IVersioningRepository VersioningRepository => _versioningRepository;
-        public IVideoGroupRepository VideoGroupRepository => _videoGroupRepository;
-        public IVideoRepository VideoRepository => _videoRepository;
 
         public async Task SaveAsync()
         {

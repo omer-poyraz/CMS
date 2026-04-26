@@ -39,14 +39,14 @@ namespace Presentation.Controllers
         /// <response code="403">Yetersiz yetki</response>
         /// <response code="500">Sunucu hatası</response>
         [HttpGet("GetAll")]
-        // [AuthorizePermission("Page", "Read")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetAllPagesAsync([FromQuery] PageParameters pageParameters)
         {
             try
             {
-                var users = await _manager.PageService.GetAllPagesAsync(pageParameters, false);
-                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(users.metaData));
-                return Ok(ApiResponse<IEnumerable<PageDto>>.CreateSuccess(_httpContextAccessor, users.pageDtos, "Success.Listed"));
+                var pages = await _manager.PageService.GetAllPagesAsync(pageParameters, false);
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pages.metaData));
+                return Ok(ApiResponse<IEnumerable<PageDto>>.CreateSuccess(_httpContextAccessor, pages.pageDtos, "Success.Listed"));
             }
             catch (Exception ex)
             {
@@ -69,13 +69,13 @@ namespace Presentation.Controllers
         /// <response code="200">Sayfa içeriği başarıyla getirildi</response>
         /// <response code="404">Sayfa içeriği bulunamadı</response>
         [HttpGet("Get/{id:int}")]
-        // [AuthorizePermission("Page", "Read")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetOnePageByIdAsync([FromRoute] int id)
         {
             try
             {
-                var user = await _manager.PageService.GetPageByIdAsync(id, false);
-                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, user, "Success.Retrieved"));
+                var page = await _manager.PageService.GetPageByIdAsync(id, false);
+                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, page, "Success.Retrieved"));
             }
             catch (Exception ex)
             {
@@ -138,15 +138,13 @@ namespace Presentation.Controllers
         /// <response code="403">Yetersiz yetki</response>
         /// <response code="400">Geçersiz veri</response>
         [HttpPost("Create")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> CreateOnePageAsync([FromBody] PageDtoForInsertion pageDtoForInsertion)
         {
             try
             {
-                var user = await _manager.PageService.CreatePageAsync(pageDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
-                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, user, "Success.Created"));
+                var page = await _manager.PageService.CreatePageAsync(pageDtoForInsertion);
+                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, page, "Success.Created"));
             }
             catch (Exception ex)
             {
@@ -193,15 +191,13 @@ namespace Presentation.Controllers
         /// <response code="403">Yetersiz yetki</response>
         /// <response code="404">Sayfa içeriği bulunamadı</response>
         [HttpPut("Update")]
-        // [AuthorizePermission("Page", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateOneUserAsync([FromBody] PageDtoForUpdate pageDtoForUpdate)
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
+        public async Task<IActionResult> UpdateOnePageAsync([FromBody] PageDtoForUpdate pageDtoForUpdate)
         {
             try
             {
-                var user = await _manager.PageService.UpdatePageAsync(pageDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
-                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, user, "Success.Updated"));
+                var page = await _manager.PageService.UpdatePageAsync(pageDtoForUpdate);
+                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, page, "Success.Updated"));
             }
             catch (Exception ex)
             {
@@ -225,15 +221,13 @@ namespace Presentation.Controllers
         /// <response code="403">Yetkisiz yetki</response>
         /// <response code="404">Sayfa içeriği bulunamadı</response>
         [HttpDelete("Delete/{id:int}")]
-        // [AuthorizePermission("Page", "Delete")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> DeleteOnePageAsync([FromRoute] int id)
         {
             try
             {
-                var user = await _manager.PageService.DeletePageAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
-                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, user, "Success.Deleted"));
+                var page = await _manager.PageService.DeletePageAsync(id, false);
+                return Ok(ApiResponse<PageDto>.CreateSuccess(_httpContextAccessor, page, "Success.Deleted"));
             }
             catch (Exception ex)
             {

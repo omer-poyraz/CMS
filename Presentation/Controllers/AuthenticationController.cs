@@ -1,5 +1,6 @@
 ﻿using Entities.DTOs.UserDto;
 using Entities.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -109,8 +110,32 @@ namespace Presentation.Controllers
         /// <summary>
         /// Kayıt için doğrulama kodu gönderir
         /// </summary>
-        [HttpPost("RegisterRequest")]
-        public async Task<IActionResult> RegisterRequest([FromBody] UserForRegisterDto userForRegisterDto)
+        // [HttpPost("RegisterRequest")]
+        // public async Task<IActionResult> RegisterRequest([FromBody] UserForRegisterDto userForRegisterDto)
+        // {
+        //     try
+        //     {
+        //         if (!ModelState.IsValid)
+        //             return BadRequest(ApiResponse<bool>.CreateError(
+        //                 _httpContextAccessor,
+        //                 "Error.ValidationError",
+        //                 400));
+
+        //         await _manager.AuthenticationService.RegisterRequest(userForRegisterDto);
+        //         return Ok(ApiResponse<bool>.CreateSuccess(
+        //             _httpContextAccessor,
+        //             true,
+        //             "Success.RegisterCodeSent"));
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return BadRequest(new { statusCode = 400, message = ex.Message });
+        //     }
+        // }
+
+        [HttpPost("Register")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
+        public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
         {
             try
             {
@@ -120,7 +145,7 @@ namespace Presentation.Controllers
                         "Error.ValidationError",
                         400));
 
-                await _manager.AuthenticationService.RegisterRequest(userForRegisterDto);
+                await _manager.AuthenticationService.RegisterUser(userForRegisterDto);
                 return Ok(ApiResponse<bool>.CreateSuccess(
                     _httpContextAccessor,
                     true,
@@ -135,42 +160,42 @@ namespace Presentation.Controllers
         /// <summary>
         /// Doğrulama kodu ile kullanıcı kaydını tamamlar
         /// </summary>
-        [HttpPost("RegisterConfirm")]
-        public async Task<IActionResult> RegisterConfirm([FromBody] RegisterConfirmRequest request)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ApiResponse<IdentityResult>.CreateError(
-                        _httpContextAccessor,
-                        "Error.ValidationError",
-                        400));
+        // [HttpPost("RegisterConfirm")]
+        // public async Task<IActionResult> RegisterConfirm([FromBody] RegisterConfirmRequest request)
+        // {
+        //     try
+        //     {
+        //         if (!ModelState.IsValid)
+        //             return BadRequest(ApiResponse<IdentityResult>.CreateError(
+        //                 _httpContextAccessor,
+        //                 "Error.ValidationError",
+        //                 400));
 
-                var result = await _manager.AuthenticationService.RegisterConfirm(request.User, request.Code);
+        //         var result = await _manager.AuthenticationService.RegisterConfirm(request.User, request.Code);
 
-                if (!result.Succeeded)
-                {
-                    var errors = result.Errors.Select(e => e.Description).ToList();
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.TryAddModelError(error.Code, error.Description);
-                    }
-                    return BadRequest(ApiResponse<List<string>>.CreateError(
-                        _httpContextAccessor,
-                        "Error.RegisterFailed",
-                        400));
-                }
+        //         if (!result.Succeeded)
+        //         {
+        //             var errors = result.Errors.Select(e => e.Description).ToList();
+        //             foreach (var error in result.Errors)
+        //             {
+        //                 ModelState.TryAddModelError(error.Code, error.Description);
+        //             }
+        //             return BadRequest(ApiResponse<List<string>>.CreateError(
+        //                 _httpContextAccessor,
+        //                 "Error.RegisterFailed",
+        //                 400));
+        //         }
 
-                return Ok(ApiResponse<IdentityResult>.CreateSuccess(
-                    _httpContextAccessor,
-                    result,
-                    "Success.RegisterSuccess"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { statusCode = 400, message = ex.Message });
-            }
-        }
+        //         return Ok(ApiResponse<IdentityResult>.CreateSuccess(
+        //             _httpContextAccessor,
+        //             result,
+        //             "Success.RegisterSuccess"));
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return BadRequest(new { statusCode = 400, message = ex.Message });
+        //     }
+        // }
         // RegisterConfirm için yardımcı model
         public class RegisterConfirmRequest
         {

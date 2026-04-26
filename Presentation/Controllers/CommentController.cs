@@ -162,7 +162,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.CommentService.CreateCommentAsync(commentDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<CommentDto>.CreateSuccess(_httpContextAccessor, content, "Success.Created"));
             }
             catch (Exception ex)
@@ -205,7 +204,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.CommentService.UpdateCommentAsync(commentDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<CommentDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception ex)
@@ -240,7 +238,6 @@ namespace Presentation.Controllers
             try
             {
                 var content = await _manager.CommentService.DeleteCommentAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<CommentDto>.CreateSuccess(_httpContextAccessor, content, "Success.Deleted"));
             }
             catch (Exception ex)

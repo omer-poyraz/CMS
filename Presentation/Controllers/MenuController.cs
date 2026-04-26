@@ -43,12 +43,12 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtları başarıyla listelendi</response>
         /// <response code="500">Sunucu hatası</response>
         [HttpGet("GetAll")]
-        // [AuthorizePermission("Menu", "Read")]
-        public async Task<IActionResult> GetAllMenusAsync()
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
+        public async Task<IActionResult> GetAllMenusAsync([FromQuery] string lang)
         {
             try
             {
-                var contents = await _manager.MenuService.GetAllMenusAsync(false);
+                var contents = await _manager.MenuService.GetAllMenusAsync(lang, false);
                 return Ok(ApiResponse<IEnumerable<MenuDto>>.CreateSuccess(_httpContextAccessor, contents, "Success.Listed"));
             }
             catch (Exception)
@@ -75,12 +75,11 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtları başarıyla listelendi</response>
         /// <response code="500">Sunucu hatası</response>
         [HttpGet("GetAllByGroup/{id:int}")]
-        // [AuthorizePermission("Menu", "Read")]
-        public async Task<IActionResult> GetAllMenusAsync([FromRoute] int id)
+        public async Task<IActionResult> GetAllMenusAsync([FromRoute] int id, [FromQuery] string lang)
         {
             try
             {
-                var contents = await _manager.MenuService.GetAllMenusByGroupAsync(id, false);
+                var contents = await _manager.MenuService.GetAllMenusByGroupAsync(id, lang, false);
                 return Ok(ApiResponse<IEnumerable<MenuDto>>.CreateSuccess(_httpContextAccessor, contents, "Success.Listed"));
             }
             catch (Exception)
@@ -107,7 +106,6 @@ namespace Presentation.Controllers
         /// <response code="200">İçerik yanıtı başarıyla getirildi</response>
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpGet("Get/{id:int}")]
-        // [AuthorizePermission("Menu", "Read")]
         public async Task<IActionResult> GetOneMenuByIdAsync([FromRoute] int id)
         {
             try
@@ -154,13 +152,12 @@ namespace Presentation.Controllers
         /// <response code="400">Geçersiz veri</response>
         [HttpPost("Create")]
         // [AuthorizePermission("Menu", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> CreateOneMenuAsync([FromBody] MenuDtoForInsertion menuDtoForInsertion)
         {
             try
             {
                 var content = await _manager.MenuService.CreateMenuAsync(menuDtoForInsertion);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuDto>.CreateSuccess(_httpContextAccessor, content, "Success.Created"));
             }
             catch (Exception)
@@ -197,13 +194,12 @@ namespace Presentation.Controllers
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpPut("Update")]
         // [AuthorizePermission("Menu", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> UpdateOneMenuAsync([FromBody] MenuDtoForUpdate menuDtoForUpdate)
         {
             try
             {
                 var content = await _manager.MenuService.UpdateMenuAsync(menuDtoForUpdate);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception)
@@ -231,13 +227,12 @@ namespace Presentation.Controllers
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpPut("Sort/{id:int}/{sort:int}")]
         // [AuthorizePermission("Module", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> SortMenuAsync([FromRoute] int id, int sort)
         {
             try
             {
                 var content = await _manager.MenuService.SortMenuAsync(id, sort, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuDto>.CreateSuccess(_httpContextAccessor, content, "Success.Updated"));
             }
             catch (Exception ex)
@@ -266,13 +261,12 @@ namespace Presentation.Controllers
         /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpDelete("Delete/{id:int}")]
         // [AuthorizePermission("Menu", "Delete")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> DeleteOneMenuAsync([FromRoute] int id)
         {
             try
             {
                 var content = await _manager.MenuService.DeleteMenuAsync(id, false);
-                await _manager.VersioningService.UpdateVersioningAsync();
                 return Ok(ApiResponse<MenuDto>.CreateSuccess(_httpContextAccessor, content, "Success.Deleted"));
             }
             catch (Exception)

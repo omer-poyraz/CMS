@@ -10,8 +10,6 @@ namespace Entities.DTOs.UserDto
         public string? UserName { get; init; }
         public string? Email { get; init; }
         public bool? Active { get; init; }
-        public int? ProductID { get; init; }
-        public bool? IsMeal { get; init; }
         public string? PhoneNumber { get; init; }
         public List<IdentityRole>? Roles { get; init; }
         public DateTime? CreatedAt { get; init; } = DateTime.UtcNow;

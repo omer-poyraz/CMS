@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
-using Services.Extensions;
 
 namespace Presentation.Controllers
 {
@@ -46,8 +45,7 @@ namespace Presentation.Controllers
         /// <response code="400">İşlem başarısız</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpGet("GetAll")]
-        // [AuthorizePermission("User", "Read")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetAllUsersAsync([FromQuery] UserParameters userParameters)
         {
             try
@@ -82,8 +80,7 @@ namespace Presentation.Controllers
         /// <response code="400">İşlem başarısız</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpGet("GetAllUnActive")]
-        // [AuthorizePermission("User", "Read")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetAllUnActiveUsersAsync([FromQuery] UserParameters userParameters)
         {
             try
@@ -117,7 +114,6 @@ namespace Presentation.Controllers
         /// <response code="400">Kullanıcı bulunamadı</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpGet("Get/{userId}")]
-        // [AuthorizePermission("User", "Read")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetOneUserByIdAsync([FromRoute] string? userId)
         {
@@ -158,7 +154,6 @@ namespace Presentation.Controllers
         /// <response code="400">Geçersiz veri</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpPut("Update")]
-        // [AuthorizePermission("User", "Write")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateOneUserAsync([FromBody] UserDtoForUpdate userDtoForUpdate
         )
@@ -200,54 +195,12 @@ namespace Presentation.Controllers
         /// <response code="400">Geçersiz veri</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpPut("UserActivation")]
-        // [AuthorizePermission("User", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> UserActivationAsync(string userId)
         {
             try
             {
                 var user = await _manager.UserService.UserActivationAsync(userId, false);
-                return Ok(ApiResponse<UserDto>.CreateSuccess(_httpContextAccessor, user, "Success.Activated"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { statusCode = 400, message = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Kullanıcı bilgilerini günceller
-        /// </summary>
-        /// <param name="userDtoForUpdate">Güncellenecek kullanıcı bilgileri</param>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     PUT /api/User/Update
-        ///     {
-        ///         "userId": "abc123",
-        ///         "firstName": "John",
-        ///         "lastName": "Doe",
-        ///         "email": "john.doe@example.com",
-        ///         "phoneNumber": "+90555123456",
-        ///         "roles": ["Admin"]
-        ///     }
-        ///     
-        ///     Güncellenebilen bilgiler:
-        ///     - Kişisel bilgiler
-        ///     - İletişim bilgileri
-        ///     - Rol ve yetkiler
-        /// </remarks>
-        /// <response code="200">Kullanıcı başarıyla güncellendi</response>
-        /// <response code="400">Geçersiz veri</response>
-        /// <response code="401">Yetkisiz erişim</response>
-        [HttpPut("UserIsMeal")]
-        // [AuthorizePermission("User", "Write")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UserIsMealAsync(string userId, bool isMeal)
-        {
-            try
-            {
-                var user = await _manager.UserService.UserIsMealAsync(userId, isMeal, false);
                 return Ok(ApiResponse<UserDto>.CreateSuccess(_httpContextAccessor, user, "Success.Activated"));
             }
             catch (Exception ex)
@@ -275,7 +228,6 @@ namespace Presentation.Controllers
         /// <response code="400">Kullanıcı bulunamadı</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpDelete("Delete/{userId}")]
-        // [AuthorizePermission("User", "Delete")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteOneUserAsync([FromQuery] string? userId)
         {
@@ -313,7 +265,6 @@ namespace Presentation.Controllers
         /// <response code="400">Geçersiz şifre veya kullanıcı bulunamadı</response>
         /// <response code="401">Yetkisiz erişim</response>
         [HttpPut("ChangePassword/{userId}")]
-        // [AuthorizePermission("User", "Write")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ChangePaswordAsync([FromRoute] string? userId, [FromBody] UserDtoForChangePassword changePassword)
         {

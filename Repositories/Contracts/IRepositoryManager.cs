@@ -2,9 +2,7 @@
 {
     public interface IRepositoryManager
     {
-        IBasketRepository BasketRepository { get; }
         ICommentRepository CommentRepository { get; }
-        IContentRepository ContentRepository { get; }
         IFilesRepository FilesRepository { get; }
         IGoogleAnalyticsRepository GoogleAnalyticsRepository { get; }
         ILanguageRepository LanguageRepository { get; }
@@ -12,15 +10,13 @@
         IMenuRepository MenuRepository { get; }
         IMenuGroupRepository MenuGroupRepository { get; }
         IPageRepository PageRepository { get; }
+        IPageSectionRepository PageSectionRepository { get; }
+        IPageTranslationRepository PageTranslationRepository { get; }
         IPopupRepository PopupRepository { get; }
-        IProductRepository ProductRepository { get; }
+        ISectionFieldRepository SectionFieldRepository { get; }
+        ISectionItemRepository SectionItemRepository { get; }
         ISettingsRepository SettingsRepository { get; }
-        IUnitRepository UnitRepository { get; }
         IUserRepository UserRepository { get; }
-        IUserProfileRepository UserProfileRepository { get; }
-        IVersioningRepository VersioningRepository { get; }
-        IVideoGroupRepository VideoGroupRepository { get; }
-        IVideoRepository VideoRepository { get; }
         Task SaveAsync();
     }
 }

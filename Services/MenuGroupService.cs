@@ -26,27 +26,27 @@ namespace Services
 
         public async Task<MenuGroupDto> DeleteMenuGroupAsync(int id, bool? trackChanges)
         {
-            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(id, trackChanges);
+            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(id, null, trackChanges);
             _manager.MenuGroupRepository.DeleteMenuGroup(menuGroup);
             await _manager.SaveAsync();
             return _mapper.Map<MenuGroupDto>(menuGroup);
         }
 
-        public async Task<IEnumerable<MenuGroupDto>> GetAllMenuGroupsAsync(bool? trackChanges)
+        public async Task<IEnumerable<MenuGroupDto>> GetAllMenuGroupsAsync(string lang, bool? trackChanges)
         {
-            var menuGroup = await _manager.MenuGroupRepository.GetAllMenuGroupsAsync(trackChanges);
+            var menuGroup = await _manager.MenuGroupRepository.GetAllMenuGroupsAsync(lang, trackChanges);
             return _mapper.Map<IEnumerable<MenuGroupDto>>(menuGroup);
         }
 
-        public async Task<MenuGroupDto> GetMenuGroupByIdAsync(int id, bool? trackChanges)
+        public async Task<MenuGroupDto> GetMenuGroupByIdAsync(int id, string lang, bool? trackChanges)
         {
-            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(id, trackChanges);
+            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(id, lang, trackChanges);
             return _mapper.Map<MenuGroupDto>(menuGroup);
         }
 
         public async Task<MenuGroupDto> UpdateMenuGroupAsync(MenuGroupDtoForUpdate menuGroupDtoForUpdate)
         {
-            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(menuGroupDtoForUpdate.ID, false);
+            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(menuGroupDtoForUpdate.ID, null, false);
             _mapper.Map(menuGroupDtoForUpdate, menuGroup);
             _manager.MenuGroupRepository.UpdateMenuGroup(menuGroup);
             await _manager.SaveAsync();

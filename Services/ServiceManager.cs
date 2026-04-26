@@ -5,9 +5,7 @@ namespace Services
     public class ServiceManager : IServiceManager
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly IBasketService _basketService;
         private readonly ICommentService _commentService;
-        private readonly IContentService _contentService;
         private readonly IFilesService _filesService;
         private readonly IGoogleAnalyticsService _googleAnalyticsService;
         private readonly ILanguageService _languageService;
@@ -15,21 +13,17 @@ namespace Services
         private readonly IMenuService _menuService;
         private readonly IMenuGroupService _menuGroupService;
         private readonly IPageService _pageService;
+        private readonly IPageSectionService _pageSectionService;
+        private readonly IPageTranslationService _pageTranslationService;
         private readonly IPopupService _popupService;
-        private readonly IProductService _productService;
+        private readonly ISectionFieldService _sectionFieldService;
+        private readonly ISectionItemService _sectionItemService;
         private readonly ISettingsService _settingsService;
-        private readonly IUnitService _unitService;
         private readonly IUserService _userService;
-        private readonly IUserProfileService _userProfileService;
-        private readonly IVersioningService _versioningService;
-        private readonly IVideoGroupService _videoGroupService;
-        private readonly IVideoService _videoService;
 
         public ServiceManager(
             IAuthenticationService authenticationService,
-            IBasketService basketService,
             ICommentService commentService,
-            IContentService contentService,
             IFilesService filesService,
             IGoogleAnalyticsService googleAnalyticsService,
             ILanguageService languageService,
@@ -37,20 +31,16 @@ namespace Services
             IMenuService menuService,
             IMenuGroupService menuGroupService,
             IPageService pageService,
+            IPageSectionService pageSectionService,
+            IPageTranslationService pageTranslationService,
             IPopupService popupService,
-            IProductService productService,
+            ISectionFieldService sectionFieldService,
+            ISectionItemService sectionItemService,
             ISettingsService settingsService,
-            IUnitService unitService,
-            IUserService userService,
-            IUserProfileService userProfileService,
-            IVersioningService versioningService,
-            IVideoGroupService videoGroupService,
-            IVideoService videoService)
+            IUserService userService)
         {
             _authenticationService = authenticationService;
-            _basketService = basketService;
             _commentService = commentService;
-            _contentService = contentService;
             _filesService = filesService;
             _googleAnalyticsService = googleAnalyticsService;
             _languageService = languageService;
@@ -58,21 +48,17 @@ namespace Services
             _menuService = menuService;
             _menuGroupService = menuGroupService;
             _pageService = pageService;
+            _pageSectionService = pageSectionService;
+            _pageTranslationService = pageTranslationService;
             _popupService = popupService;
-            _productService = productService;
+            _sectionFieldService = sectionFieldService;
+            _sectionItemService = sectionItemService;
             _settingsService = settingsService;
-            _unitService = unitService;
             _userService = userService;
-            _userProfileService = userProfileService;
-            _versioningService = versioningService;
-            _videoGroupService = videoGroupService;
-            _videoService = videoService;
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService;
-        public IBasketService BasketService => _basketService;
         public ICommentService CommentService => _commentService;
-        public IContentService ContentService => _contentService;
         public IFilesService FilesService => _filesService;
         public IGoogleAnalyticsService GoogleAnalyticsService => _googleAnalyticsService;
         public ILanguageService LanguageService => _languageService;
@@ -80,14 +66,12 @@ namespace Services
         public IMenuService MenuService => _menuService;
         public IMenuGroupService MenuGroupService => _menuGroupService;
         public IPageService PageService => _pageService;
+        public IPageSectionService PageSectionService => _pageSectionService;
+        public IPageTranslationService PageTranslationService => _pageTranslationService;
         public IPopupService PopupService => _popupService;
-        public IProductService ProductService => _productService;
+        public ISectionFieldService SectionFieldService => _sectionFieldService;
+        public ISectionItemService SectionItemService => _sectionItemService;
         public ISettingsService SettingsService => _settingsService;
-        public IUnitService UnitService => _unitService;
         public IUserService UserService => _userService;
-        public IUserProfileService UserProfileService => _userProfileService;
-        public IVersioningService VersioningService => _versioningService;
-        public IVideoGroupService VideoGroupService => _videoGroupService;
-        public IVideoService VideoService => _videoService;
     }
 }
