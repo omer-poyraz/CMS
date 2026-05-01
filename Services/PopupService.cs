@@ -27,7 +27,7 @@ namespace Services
         public async Task<PopupDto> DeletePopupAsync(int id, bool? trackChanges)
         {
             var popup = await _manager.PopupRepository.GetPopupByIdAsync(id, trackChanges);
-            _manager.PopupRepository.DeletePopup(popup);
+            _manager.PopupRepository.DeletePopup(popup!);
             await _manager.SaveAsync();
             return _mapper.Map<PopupDto>(popup);
         }
@@ -48,7 +48,7 @@ namespace Services
         {
             var popup = await _manager.PopupRepository.GetPopupByIdAsync(popupDtoForUpdate.ID, false);
             _mapper.Map(popupDtoForUpdate, popup);
-            _manager.PopupRepository.UpdatePopup(popup);
+            _manager.PopupRepository.UpdatePopup(popup!);
             await _manager.SaveAsync();
             return _mapper.Map<PopupDto>(popup);
         }

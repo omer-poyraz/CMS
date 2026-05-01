@@ -48,7 +48,8 @@ namespace API.Extensions
                             UserName = superAdminUserName,
                             Email = superAdminEmail,
                             EmailConfirmed = true,
-                            Active = true
+                            Active = true,
+                            Roles = new List<IdentityRole> { new IdentityRole(superAdminRole) }
                         };
                         var result = await userManager.CreateAsync(superAdmin, superAdminPassword);
                         if (result.Succeeded)

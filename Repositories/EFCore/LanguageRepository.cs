@@ -20,20 +20,18 @@ namespace Repositories.EFCore
             return language;
         }
 
-        public async Task<IEnumerable<Language>> GetAllLanguagesAsync(bool? trackChanges)
-        {
-            return await FindAll(trackChanges).OrderBy(s => s.ID).ToListAsync();
-        }
+        public async Task<IEnumerable<Language>> GetAllLanguagesAsync(bool? trackChanges) =>
+            await FindAll(trackChanges)
+                .OrderBy(s => s.ID)
+                .ToListAsync();
 
-        public async Task<Language> GetLanguageByIdAsync(int id, bool? trackChanges)
-        {
-            return await FindByCondition(s => s.ID.Equals(id), trackChanges).SingleOrDefaultAsync();
-        }
+        public async Task<Language?> GetLanguageByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(s => s.ID.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
 
-        public async Task<Language> GetLanguageByCodeAsync(string code, bool? trackChanges)
-        {
-            return await FindByCondition(m => m.Code == code, trackChanges).SingleOrDefaultAsync();
-        }
+        public async Task<Language?> GetLanguageByCodeAsync(string code, bool? trackChanges) =>
+            await FindByCondition(m => m.Code == code, trackChanges)
+                .SingleOrDefaultAsync();
 
         public Language UpdateLanguage(Language language)
         {

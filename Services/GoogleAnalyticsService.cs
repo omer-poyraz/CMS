@@ -7,7 +7,6 @@ using Google.Apis.Services;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Services.Contracts;
-using System.Text;
 
 namespace Services
 {
@@ -22,37 +21,32 @@ namespace Services
 
         public async Task<AnalyticsReportResponse> GetAnalyticsReportGA4Async(AnalyticsReportRequest request)
         {
-            // PropertyID'yi kontrol et
             if (string.IsNullOrEmpty(_options.PropertyId))
                 throw new Exception("Google Analytics Property ID is not configured in appsettings.json.");
 
             if (_options.ServiceAccountKeyJson == null)
                 throw new Exception("Google Analytics service account key is not configured in appsettings.json.");
 
-            // Property ID'yi request nesnesinden veya appsettings'den al
             var propertyId = !string.IsNullOrEmpty(request.PropertyId)
                 ? request.PropertyId
                 : _options.PropertyId;
 
-            // Google servis için hizmet hesabı kimlik doğrulaması
             var jsonString = JsonConvert.SerializeObject(_options.ServiceAccountKeyJson);
             var credential = GoogleCredential.FromJson(jsonString)
                 .CreateScoped(AnalyticsDataService.Scope.AnalyticsReadonly);
 
-            // Analytics Data API v1beta istemcisini oluştur (GA4 için)
             var service = new AnalyticsDataService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
                 ApplicationName = "API Analytics"
             });
 
-            // API isteğini yapılandır
             var reportRequest = new RunReportRequest
             {
                 Property = $"properties/{propertyId}",
-                DateRanges = new List<Google.Apis.AnalyticsData.v1beta.Data.DateRange>
+                DateRanges = new List<DateRange>
                 {
-                    new Google.Apis.AnalyticsData.v1beta.Data.DateRange
+                    new DateRange
                     {
                         StartDate = request.StartDate?.ToString("yyyy-MM-dd") ?? DateTime.UtcNow.AddDays(-30).ToString("yyyy-MM-dd"),
                         EndDate = request.EndDate?.ToString("yyyy-MM-dd") ?? DateTime.UtcNow.ToString("yyyy-MM-dd")
@@ -109,7 +103,6 @@ namespace Services
 
             var overviewData = await GetAnalyticsReportGA4Async(request);
 
-            // Sayfa görünümlerini al
             var topPagesRequest = new AnalyticsReportRequest
             {
                 StartDate = startDate ?? DateTime.UtcNow.AddDays(-30),
@@ -121,7 +114,6 @@ namespace Services
 
             var topPagesData = await GetAnalyticsReportGA4Async(topPagesRequest);
 
-            // Referans kaynakları al
             var referrersRequest = new AnalyticsReportRequest
             {
                 StartDate = startDate ?? DateTime.UtcNow.AddDays(-30),
@@ -133,7 +125,6 @@ namespace Services
 
             var referrersData = await GetAnalyticsReportGA4Async(referrersRequest);
 
-            // Kullanıcı konumlarını al
             var locationsRequest = new AnalyticsReportRequest
             {
                 StartDate = startDate ?? DateTime.UtcNow.AddDays(-30),
@@ -145,7 +136,6 @@ namespace Services
 
             var locationsData = await GetAnalyticsReportGA4Async(locationsRequest);
 
-            // Özet oluştur
             var summary = new AnalyticsSummary
             {
                 TotalUsers = ExtractTotalMetric(overviewData, "activeUsers"),
@@ -161,7 +151,6 @@ namespace Services
             return summary;
         }
 
-        // Helper Methods
         private int ExtractTotalMetric(AnalyticsReportResponse data, string metricName)
         {
             var metricIndex = data.MetricHeaders.IndexOf(metricName);

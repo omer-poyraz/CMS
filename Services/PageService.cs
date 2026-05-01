@@ -37,7 +37,7 @@ namespace Services
         public async Task<PageDto> DeletePageAsync(int id, bool? trackChanges)
         {
             var pageGroup = await _manager.PageRepository.GetPageByIdAsync(id, trackChanges);
-            _manager.PageRepository.DeletePage(pageGroup);
+            _manager.PageRepository.DeletePage(pageGroup!);
             await _manager.SaveAsync();
             return _mapper.Map<PageDto>(pageGroup);
         }
@@ -65,7 +65,7 @@ namespace Services
         {
             var page = await _manager.PageRepository.GetPageByIdAsync(pageDtoForUpdate.ID, false);
             _mapper.Map(pageDtoForUpdate, page);
-            _manager.PageRepository.UpdatePage(page);
+            _manager.PageRepository.UpdatePage(page!);
             await _manager.SaveAsync();
             return _mapper.Map<PageDto>(page);
         }

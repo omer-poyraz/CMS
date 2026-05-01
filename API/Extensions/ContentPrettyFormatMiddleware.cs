@@ -73,7 +73,7 @@ public class ContentPrettyFormatMiddleware
                         context.Request.Body.Position = 0;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine($"JSON parsing error: {ex.Message}");
                     Console.WriteLine("BODY ERROR: [" + body + "]");

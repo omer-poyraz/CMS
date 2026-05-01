@@ -13,11 +13,7 @@ namespace Repositories.EFCore
         private readonly ILanguageRepository _languageRepository;
         private readonly ILogRepository _logRepository;
         private readonly IPageRepository _pageRepository;
-        private readonly IPageSectionRepository _pageSectionRepository;
-        private readonly IPageTranslationRepository _pageTranslationRepository;
         private readonly IPopupRepository _popupRepository;
-        private readonly ISectionFieldRepository _sectionFieldRepository;
-        private readonly ISectionItemRepository _sectionItemRepository;
         private readonly ISettingsRepository _settingsRepository;
         private readonly IUserRepository _userRepository;
 
@@ -31,11 +27,7 @@ namespace Repositories.EFCore
             ILanguageRepository languageRepository,
             ILogRepository logRepository,
             IPageRepository pageRepository,
-            IPageSectionRepository pageSectionRepository,
-            IPageTranslationRepository pageTranslationRepository,
             IPopupRepository popupRepository,
-            ISectionFieldRepository sectionFieldRepository,
-            ISectionItemRepository sectionItemRepository,
             ISettingsRepository settingsRepository,
             IUserRepository userRepository)
         {
@@ -48,11 +40,7 @@ namespace Repositories.EFCore
             _languageRepository = languageRepository;
             _logRepository = logRepository;
             _pageRepository = pageRepository;
-            _pageSectionRepository = pageSectionRepository;
-            _pageTranslationRepository = pageTranslationRepository;
             _popupRepository = popupRepository;
-            _sectionFieldRepository = sectionFieldRepository;
-            _sectionItemRepository = sectionItemRepository;
             _settingsRepository = settingsRepository;
             _userRepository = userRepository;
         }
@@ -65,11 +53,7 @@ namespace Repositories.EFCore
         public ILanguageRepository LanguageRepository => _languageRepository;
         public ILogRepository LogRepository => _logRepository;
         public IPageRepository PageRepository => _pageRepository;
-        public IPageSectionRepository PageSectionRepository => _pageSectionRepository;
-        public IPageTranslationRepository PageTranslationRepository => _pageTranslationRepository;
         public IPopupRepository PopupRepository => _popupRepository;
-        public ISectionFieldRepository SectionFieldRepository => _sectionFieldRepository;
-        public ISectionItemRepository SectionItemRepository => _sectionItemRepository;
         public ISettingsRepository SettingsRepository => _settingsRepository;
         public IUserRepository UserRepository => _userRepository;
 

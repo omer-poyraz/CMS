@@ -27,7 +27,7 @@ namespace Services
         public async Task<MenuDto> DeleteMenuAsync(int id, bool? trackChanges)
         {
             var menu = await _manager.MenuRepository.GetMenuByIdAsync(id, trackChanges);
-            _manager.MenuRepository.DeleteMenu(menu);
+            _manager.MenuRepository.DeleteMenu(menu!);
             await _manager.SaveAsync();
             return _mapper.Map<MenuDto>(menu);
         }
@@ -56,10 +56,10 @@ namespace Services
             var sortMenu = await _manager.MenuRepository.GetMenuBySortAsync(sort, trackChanges);
             if (sortMenu != null)
             {
-                sortMenu.Sort = menu.Sort;
+                sortMenu.Sort = menu!.Sort;
                 _manager.MenuRepository.SortMenu(sortMenu);
             }
-            menu.Sort = sort;
+            menu!.Sort = sort;
             _manager.MenuRepository.SortMenu(menu);
             await _manager.SaveAsync();
             return _mapper.Map<MenuDto>(menu);
@@ -69,7 +69,7 @@ namespace Services
         {
             var menu = await _manager.MenuRepository.GetMenuByIdAsync(menuDtoForUpdate.ID, false);
             _mapper.Map(menuDtoForUpdate, menu);
-            _manager.MenuRepository.UpdateMenu(menu);
+            _manager.MenuRepository.UpdateMenu(menu!);
             await _manager.SaveAsync();
             return _mapper.Map<MenuDto>(menu);
         }

@@ -29,9 +29,8 @@ namespace Repositories.EFCore
             return PagedList<Log>.ToPagedList(logs, logParameters.PageNumber, logParameters.PageSize);
         }
 
-        public async Task<Log> GetLogByIdAsync(int id, bool? trackChanges)
-        {
-            return await FindByCondition(s => s.ID.Equals(id), trackChanges).SingleOrDefaultAsync();
-        }
+        public async Task<Log?> GetLogByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(s => s.ID.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
     }
 }

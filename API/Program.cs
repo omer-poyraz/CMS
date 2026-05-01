@@ -51,7 +51,6 @@ builder.Services.AddControllers(opt =>
             .Ignore;
         options.SerializerSettings.MaxDepth = 128;
         options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-        options.SerializerSettings.Converters.Add(new NewtonsoftJsonDocumentConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -67,12 +66,14 @@ builder.Services.Configure<GoogleAnalyticsOptions>(
 
 var app = builder.Build();
 
-// if (app.Environment.IsDevelopment())
-// {
-app.UseDeveloperExceptionPage();
-app.UseSwagger();
-app.UseSwaggerUI();
-// }
+app.UseHsts();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseMiddleware<ContentPrettyFormatMiddleware>();
 app.UseMiddleware<CreateSuperAdminMiddleware>();
@@ -80,24 +81,29 @@ app.UseMiddleware<LanguageMiddleware>();
 app.UseMiddleware<LogMiddleware>();
 
 app.UseHttpsRedirection();
-app.UsePathBase("/api");
+
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot/images")
+    ),
+    RequestPath = "/images",
+    ServeUnknownFileTypes = false,
+    DefaultContentType = "image/jpeg",
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers["Cache-Control"] = "public,max-age=86400";
+    }
+});
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStaticFiles();
-app.UseStaticFiles(
-    new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "./wwwroot/images")
-        ),
-        RequestPath = "/images",
-    }
-);
+app.UseRateLimiter();
 
-app.UseCors("CorsPolicy");
-
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("fixed");
 
 app.Run();

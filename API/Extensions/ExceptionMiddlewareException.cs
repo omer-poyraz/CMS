@@ -17,7 +17,6 @@ namespace API.Extensions
                     var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
                     var exception = exceptionHandlerPathFeature?.Error;
 
-
                     await context.Response.WriteAsync(new
                     {
                         StatusCode = context.Response.StatusCode,

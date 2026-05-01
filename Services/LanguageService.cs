@@ -27,7 +27,7 @@ namespace Services
         public async Task<LanguageDto> DeleteLanguageAsync(int id, bool? trackChanges)
         {
             var language = await _manager.LanguageRepository.GetLanguageByIdAsync(id, trackChanges);
-            _manager.LanguageRepository.DeleteLanguage(language);
+            _manager.LanguageRepository.DeleteLanguage(language!);
             await _manager.SaveAsync();
             return _mapper.Map<LanguageDto>(language);
         }
@@ -54,7 +54,7 @@ namespace Services
         {
             var language = await _manager.LanguageRepository.GetLanguageByIdAsync(languageDtoForUpdate.ID, false);
             _mapper.Map(languageDtoForUpdate, language);
-            _manager.LanguageRepository.UpdateLanguage(language);
+            _manager.LanguageRepository.UpdateLanguage(language!);
             await _manager.SaveAsync();
             return _mapper.Map<LanguageDto>(language);
         }

@@ -46,10 +46,10 @@ namespace Repositories.EFCore
             return PagedList<User>.ToPagedList(users, userParameters.PageNumber, userParameters.PageSize);
         }
 
-        public async Task<User> GetOneUserByIdAsync(string? userId, bool? trackChanges)
-        {
-            return await FindByCondition(u => u.Id.Equals(userId), trackChanges).Include(r => r.Roles).SingleOrDefaultAsync();
-        }
+        public async Task<User?> GetOneUserByIdAsync(string? userId, bool? trackChanges) =>
+            await FindByCondition(u => u.Id.Equals(userId), trackChanges)
+                .Include(r => r.Roles)
+                .SingleOrDefaultAsync();
 
         public User UpdateOneUser(User user)
         {

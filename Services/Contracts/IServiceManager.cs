@@ -8,14 +8,11 @@
         IGoogleAnalyticsService GoogleAnalyticsService { get; }
         ILanguageService LanguageService { get; }
         ILogService LogService { get; }
+        IMailTemplateService MailTemplateService { get; }
         IMenuService MenuService { get; }
         IMenuGroupService MenuGroupService { get; }
         IPageService PageService { get; }
-        IPageSectionService PageSectionService { get; }
-        IPageTranslationService PageTranslationService { get; }
         IPopupService PopupService { get; }
-        ISectionFieldService SectionFieldService { get; }
-        ISectionItemService SectionItemService { get; }
         ISettingsService SettingsService { get; }
         IUserService UserService { get; }
     }

@@ -26,8 +26,8 @@ namespace Services
 
         public async Task<MenuGroupDto> DeleteMenuGroupAsync(int id, bool? trackChanges)
         {
-            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(id, null, trackChanges);
-            _manager.MenuGroupRepository.DeleteMenuGroup(menuGroup);
+            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(id, null!, trackChanges);
+            _manager.MenuGroupRepository.DeleteMenuGroup(menuGroup!);
             await _manager.SaveAsync();
             return _mapper.Map<MenuGroupDto>(menuGroup);
         }
@@ -46,9 +46,9 @@ namespace Services
 
         public async Task<MenuGroupDto> UpdateMenuGroupAsync(MenuGroupDtoForUpdate menuGroupDtoForUpdate)
         {
-            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(menuGroupDtoForUpdate.ID, null, false);
+            var menuGroup = await _manager.MenuGroupRepository.GetMenuGroupByIdAsync(menuGroupDtoForUpdate.ID, null!, false);
             _mapper.Map(menuGroupDtoForUpdate, menuGroup);
-            _manager.MenuGroupRepository.UpdateMenuGroup(menuGroup);
+            _manager.MenuGroupRepository.UpdateMenuGroup(menuGroup!);
             await _manager.SaveAsync();
             return _mapper.Map<MenuGroupDto>(menuGroup);
         }

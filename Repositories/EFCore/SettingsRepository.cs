@@ -25,11 +25,11 @@ namespace Repositories.EFCore
                 .OrderBy(s => s.ID)
                 .ToListAsync();
 
-        public async Task<Settings> GetSettingsByIdAsync(int id, bool? trackChanges) =>
+        public async Task<Settings?> GetSettingsByIdAsync(int id, bool? trackChanges) =>
             await FindByCondition(s => s.ID.Equals(id), trackChanges)
                 .FirstOrDefaultAsync();
 
-        public async Task<Settings> GetSettingsAsync(bool? trackChanges) =>
+        public async Task<Settings?> GetSettingsAsync(bool? trackChanges) =>
             await FindAll(trackChanges)
                 .OrderByDescending(s => s.ID)
                 .FirstOrDefaultAsync();

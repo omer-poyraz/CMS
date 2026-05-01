@@ -10,14 +10,11 @@ namespace Services
         private readonly IGoogleAnalyticsService _googleAnalyticsService;
         private readonly ILanguageService _languageService;
         private readonly ILogService _logService;
+        private readonly IMailTemplateService _mailTemplateService;
         private readonly IMenuService _menuService;
         private readonly IMenuGroupService _menuGroupService;
         private readonly IPageService _pageService;
-        private readonly IPageSectionService _pageSectionService;
-        private readonly IPageTranslationService _pageTranslationService;
         private readonly IPopupService _popupService;
-        private readonly ISectionFieldService _sectionFieldService;
-        private readonly ISectionItemService _sectionItemService;
         private readonly ISettingsService _settingsService;
         private readonly IUserService _userService;
 
@@ -28,14 +25,11 @@ namespace Services
             IGoogleAnalyticsService googleAnalyticsService,
             ILanguageService languageService,
             ILogService logService,
+            IMailTemplateService mailTemplateService,
             IMenuService menuService,
             IMenuGroupService menuGroupService,
             IPageService pageService,
-            IPageSectionService pageSectionService,
-            IPageTranslationService pageTranslationService,
             IPopupService popupService,
-            ISectionFieldService sectionFieldService,
-            ISectionItemService sectionItemService,
             ISettingsService settingsService,
             IUserService userService)
         {
@@ -45,14 +39,11 @@ namespace Services
             _googleAnalyticsService = googleAnalyticsService;
             _languageService = languageService;
             _logService = logService;
+            _mailTemplateService = mailTemplateService;
             _menuService = menuService;
             _menuGroupService = menuGroupService;
             _pageService = pageService;
-            _pageSectionService = pageSectionService;
-            _pageTranslationService = pageTranslationService;
             _popupService = popupService;
-            _sectionFieldService = sectionFieldService;
-            _sectionItemService = sectionItemService;
             _settingsService = settingsService;
             _userService = userService;
         }
@@ -63,14 +54,11 @@ namespace Services
         public IGoogleAnalyticsService GoogleAnalyticsService => _googleAnalyticsService;
         public ILanguageService LanguageService => _languageService;
         public ILogService LogService => _logService;
+        public IMailTemplateService MailTemplateService => _mailTemplateService;
         public IMenuService MenuService => _menuService;
         public IMenuGroupService MenuGroupService => _menuGroupService;
         public IPageService PageService => _pageService;
-        public IPageSectionService PageSectionService => _pageSectionService;
-        public IPageTranslationService PageTranslationService => _pageTranslationService;
         public IPopupService PopupService => _popupService;
-        public ISectionFieldService SectionFieldService => _sectionFieldService;
-        public ISectionItemService SectionItemService => _sectionItemService;
         public ISettingsService SettingsService => _settingsService;
         public IUserService UserService => _userService;
     }

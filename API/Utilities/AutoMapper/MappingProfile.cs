@@ -50,7 +50,6 @@ namespace API.Utilities.AutoMapper
             CreateMap<MenuGroup, MenuGroupDto>();
             CreateMap<MenuGroupDtoForInsertion, MenuGroup>();
 
-
             CreateMap<PageDtoForUpdate, Page>().ReverseMap();
             CreateMap<Page, PageDto>()
                 .ForMember(dest => dest.Translations, opt => opt.MapFrom(src => src.Translations))
@@ -70,13 +69,13 @@ namespace API.Utilities.AutoMapper
             CreateMap<PageTranslationDtoForInsertion, PageTranslation>();
 
             CreateMap<SectionFieldDtoForUpdate, SectionField>().ReverseMap();
-            CreateMap<SectionField, Entities.DTOs.SectionFieldDto.SectionFieldDto>()
+            CreateMap<SectionField, SectionFieldDto>()
                 .ForMember(dest => dest.PageSectionID, opt => opt.MapFrom(src => src.PageSectionID))
                 .ForMember(dest => dest.SectionItemID, opt => opt.MapFrom(src => src.SectionItemID));
             CreateMap<SectionFieldDtoForInsertion, SectionField>();
 
             CreateMap<SectionItemDtoForUpdate, SectionItem>().ReverseMap();
-            CreateMap<SectionItem, Entities.DTOs.SectionItemDto.SectionItemDto>()
+            CreateMap<SectionItem, SectionItemDto>()
                 .ForMember(dest => dest.PageSectionID, opt => opt.MapFrom(src => src.PageSectionID))
                 .ForMember(dest => dest.Fields, opt => opt.MapFrom(src => src.Fields));
             CreateMap<SectionItemDtoForInsertion, SectionItem>();

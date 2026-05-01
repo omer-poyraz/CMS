@@ -39,7 +39,7 @@ namespace Services.Extensions
                     char.GetUnicodeCategory(c)
                     != System.Globalization.UnicodeCategory.NonSpacingMark
                 )
-                .ToArray() // Add this line to convert IEnumerable to array
+                .ToArray()
                 .AsSpan()
                 .ToString()
                 .ToLower()

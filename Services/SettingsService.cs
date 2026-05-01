@@ -28,7 +28,7 @@ namespace Services
         public async Task<SettingsDto> DeleteSettingsAsync(int id, bool? trackChanges)
         {
             var settingsGroup = await _manager.SettingsRepository.GetSettingsByIdAsync(id, trackChanges);
-            _manager.SettingsRepository.DeleteSettings(settingsGroup);
+            _manager.SettingsRepository.DeleteSettings(settingsGroup!);
             await _manager.SaveAsync();
             return _mapper.Map<SettingsDto>(settingsGroup);
         }
@@ -55,7 +55,7 @@ namespace Services
         {
             var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(false);
             _mapper.Map(settingsGroupDtoForUpdate, settingsGroup);
-            _manager.SettingsRepository.UpdateSettings(settingsGroup);
+            _manager.SettingsRepository.UpdateSettings(settingsGroup!);
             await _manager.SaveAsync();
             return _mapper.Map<SettingsDto>(settingsGroup);
         }

@@ -35,14 +35,9 @@ namespace Repositories.EFCore
                 .OrderBy(s => s.ID)
                 .ToListAsync();
 
-        public async Task<IEnumerable<Files>> GetAllFilessByWaterMarkedAsync(bool waterMarked, bool? trackChanges) =>
-            await FindAll(trackChanges)
-                .Where(s => s.WaterMarked.Equals(waterMarked))
-                .OrderBy(s => s.ID)
-                .ToListAsync();
-
-        public async Task<Files> GetFilesByIdAsync(int id, bool? trackChanges) =>
-            await FindByCondition(s => s.ID.Equals(id), trackChanges).SingleOrDefaultAsync();
+        public async Task<Files?> GetFilesByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(s => s.ID.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
 
         public Files UpdateFiles(Files files)
         {

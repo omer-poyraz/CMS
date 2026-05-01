@@ -20,23 +20,18 @@ namespace Repositories.EFCore
             return googleAnalytics;
         }
 
-        public async Task<IEnumerable<GoogleAnalytics>> GetAllGoogleAnalyticsAsync(bool? trackChanges)
-        {
-            return await FindAll(trackChanges)
+        public async Task<IEnumerable<GoogleAnalytics>> GetAllGoogleAnalyticsAsync(bool? trackChanges) =>
+            await FindAll(trackChanges)
                 .OrderBy(ga => ga.ID)
                 .ToListAsync();
-        }
 
-        public async Task<GoogleAnalytics> GetGoogleAnalyticsByIdAsync(int id, bool? trackChanges)
-        {
-            return await FindByCondition(ga => ga.ID.Equals(id), trackChanges)
+        public async Task<GoogleAnalytics?> GetGoogleAnalyticsByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(ga => ga.ID.Equals(id), trackChanges)
                 .SingleOrDefaultAsync();
-        }
 
-        public async Task<GoogleAnalytics> GetActiveGoogleAnalyticsAsync(bool? trackChanges)
-        {
-            return await FindByCondition(ga => ga.Active.Equals(true), trackChanges).FirstOrDefaultAsync();
-        }
+        public async Task<GoogleAnalytics?> GetActiveGoogleAnalyticsAsync(bool? trackChanges) =>
+            await FindByCondition(ga => ga.Active.Equals(true), trackChanges)
+                .FirstOrDefaultAsync();
 
         public GoogleAnalytics UpdateGoogleAnalytics(GoogleAnalytics googleAnalytics)
         {

@@ -16,20 +16,22 @@ namespace Services
         private readonly UserManager<Entities.Models.User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IMailService _mailService;
+        private readonly IMailTemplateService _mailTemplateService;
 
-        public UserService(IRepositoryManager manager, IMapper mapper, UserManager<Entities.Models.User> userManager, IConfiguration configuration, IMailService mailService)
+        public UserService(IRepositoryManager manager, IMapper mapper, UserManager<Entities.Models.User> userManager, IConfiguration configuration, IMailService mailService, IMailTemplateService mailTemplateService)
         {
             _manager = manager;
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
             _mailService = mailService;
+            _mailTemplateService = mailTemplateService;
         }
 
         public async Task<UserDto> DeleteOneUserAsync(string? userId, bool? trackChanges)
         {
             var user = await _manager.UserRepository.GetOneUserByIdAsync(userId, trackChanges);
-            _manager.UserRepository.DeleteOneUser(user);
+            _manager.UserRepository.DeleteOneUser(user!);
             await _manager.SaveAsync();
             return _mapper.Map<UserDto>(user);
         }
@@ -50,7 +52,7 @@ namespace Services
         public async Task<UserDto> UpdateOneUserAsync(string? userId, UserDtoForUpdate userDtoForUpdate, bool? trackChanges)
         {
             var userDto = await _manager.UserRepository.GetOneUserByIdAsync(userId, trackChanges);
-            var user = await _userManager.FindByEmailAsync(userDto.Email!);
+            var user = await _userManager.FindByEmailAsync(userDto!.Email!);
 
             user!.UserName = userDtoForUpdate.UserName;
             user.FirstName = userDtoForUpdate.FirstName;
@@ -66,7 +68,7 @@ namespace Services
         public async Task<UserDto> ChangePasswordAsync(string? userId, string currentPassword, string newPassword, bool? trackChanges)
         {
             var userDto = await _manager.UserRepository.GetOneUserByIdAsync(userId, trackChanges);
-            var user = await _userManager.FindByEmailAsync(userDto.Email!);
+            var user = await _userManager.FindByEmailAsync(userDto!.Email!);
             await _userManager.ChangePasswordAsync(user!, currentPassword, newPassword);
             return _mapper.Map<UserDto>(user);
         }
@@ -84,40 +86,8 @@ namespace Services
             {
                 var EmailInfo = _configuration.GetSection("EmailInfo");
                 var deepLink = _configuration.GetSection("EmailInfo")["ResetPasswordLink"]!.ToString()!.Replace("_email_", mail);
-
-                string subject = "Şifre Sıfırlama Talebi";
-                string body = $@"
-                            <!DOCTYPE html>
-                            <html>
-                                <head>
-                                    <meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"">
-                                </head>
-                                <body style=""margin: 0; padding: 20px; font-family: Arial, sans-serif;"">
-                                    <table border=""0"" cellpadding=""0"" cellspacing=""0"" width=""100%"">
-                                        <tr>
-                                            <td align=""center"">
-                                                <h2>Şifre Sıfırlama</h2>
-                                                <p>Merhaba,</p>
-                                                <p>North Soft hesabınız için şifre sıfırlama talebinde bulundunuz.</p>
-                                                <p>Eğer bu talepte siz bulunduysanız lütfen aşağıdaki bağlantıya tıklayarak şifrenizi sıfırlayabilirsiniz.</p>
-                                                <!-- Ana Link Butonu -->
-                                                <div onclick=""window.location.href='{deepLink}'"" 
-                                                   style=""display: inline-block; 
-                                                          background-color: #007bff; 
-                                                          color: #ffffff;
-                                                          padding: 12px 24px;
-                                                          text-decoration: none;
-                                                          border-radius: 4px;
-                                                          margin: 20px 0;
-                                                          font-weight: bold;"">
-                                                    Şifremi Sıfırla
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </body>
-                            </html>";
-                await _mailService.SendMailAsync(mail!, subject, body, true);
+                var body = _mailTemplateService.GetPasswordResetTemplate(user.FirstName + " " + user.LastName, deepLink);
+                await _mailService.SendMailAsync(mail!, "Şifre Sıfırlama", body, true);
                 return true;
             }
             catch (Exception ex)
@@ -136,7 +106,7 @@ namespace Services
         public async Task<UserDto> UserActivationAsync(string userId, bool trackChanges)
         {
             var userDto = await _manager.UserRepository.GetOneUserByIdAsync(userId, trackChanges);
-            var user = await _userManager.FindByEmailAsync(userDto.Email!);
+            var user = await _userManager.FindByEmailAsync(userDto!.Email!);
             var name = user!.FirstName + " " + user.LastName;
 
             user!.Active = true;
@@ -151,7 +121,7 @@ namespace Services
         public async Task<UserDto> UserIsMealAsync(string userId, bool isMeal, bool trackChanges)
         {
             var userDto = await _manager.UserRepository.GetOneUserByIdAsync(userId, trackChanges);
-            var user = await _userManager.FindByEmailAsync(userDto.Email!);
+            var user = await _userManager.FindByEmailAsync(userDto!.Email!);
             var name = user!.FirstName + " " + user.LastName;
 
             user.UpdatedAt = DateTime.UtcNow;
@@ -165,7 +135,7 @@ namespace Services
         public async Task<UserDto> UserUnActiveAsync(string userId, bool trackChanges)
         {
             var userDto = await _manager.UserRepository.GetOneUserByIdAsync(userId, trackChanges);
-            var user = await _userManager.FindByEmailAsync(userDto.Email!);
+            var user = await _userManager.FindByEmailAsync(userDto!.Email!);
             var name = user!.FirstName + " " + user.LastName;
 
             user!.Active = false;

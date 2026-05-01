@@ -51,7 +51,7 @@ namespace Repositories.EFCore
 
         private void SetUserFields()
         {
-            if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null || !_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null || !_httpContextAccessor.HttpContext.User.Identity!.IsAuthenticated)
                 return;
 
             var user = _httpContextAccessor.HttpContext.User;

@@ -27,31 +27,27 @@ namespace Repositories.EFCore
         {
             var pages = await FindAll(trackChanges)
                 .OrderByDescending(s => s.ID)
-                .Include(p => p.Translations.Where(t => t.Lang.Equals(pageParameters.Lang)))
+                .Include(p => p.Translations!.Where(t => t.Lang!.Equals(pageParameters.Lang)))
                 .ToListAsync();
 
             return PagedList<Page>.ToPagedList(pages, pageParameters.PageNumber, pageParameters.PageSize);
         }
 
-        public async Task<Page> GetPageByIdAsync(int id, bool? trackChanges)
-        {
-            return await FindByCondition(s => s.ID.Equals(id), trackChanges)
+        public async Task<Page?> GetPageByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(s => s.ID.Equals(id), trackChanges)
                 .Include(p => p.Translations)
                 .Include(p => p.Sections)
                 .SingleOrDefaultAsync();
-        }
 
-        public async Task<Page> GetPageBySlugAsync(string slug, string lang, bool? trackChanges)
-        {
-            return await FindByCondition(s => s.Translations.Any(t => t.Slug.Equals(slug) && t.Lang.Equals(lang)), trackChanges)
-                .Include(p => p.Translations.Where(t => t.Slug.Equals(slug) && t.Lang.Equals(lang)))
-                .Include(p => p.Sections)
-                    .ThenInclude(s => s.Fields.Where(f => f.Lang.Equals(lang)))
-                .Include(p => p.Sections)
-                    .ThenInclude(s => s.Items)
-                        .ThenInclude(i => i.Fields.Where(f => f.Lang.Equals(lang)))
+        public async Task<Page?> GetPageBySlugAsync(string slug, string lang, bool? trackChanges) =>
+            await FindByCondition(s => s.Translations!.Any(t => t.Slug!.Equals(slug) && t.Lang!.Equals(lang)), trackChanges)
+                .Include(p => p.Translations!.Where(t => t.Slug!.Equals(slug) && t.Lang!.Equals(lang)))
+                .Include(p => p.Sections)!
+                    .ThenInclude(s => s.Fields!.Where(f => f.Lang!.Equals(lang)))
+                .Include(p => p.Sections)!
+                    .ThenInclude(s => s.Items)!
+                        .ThenInclude(i => i.Fields!.Where(f => f.Lang!.Equals(lang)))
                 .SingleOrDefaultAsync();
-        }
 
         public Page UpdatePage(Page page)
         {

@@ -8,7 +8,7 @@ namespace Repositories.Contracts
     {
         Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool? trackChanges);
         Task<PagedList<User>> GetAllUnActiveUsersAsync(UserParameters userParameters, bool? trackChanges);
-        Task<User> GetOneUserByIdAsync(string? userId, bool? trackChanges);
+        Task<User?> GetOneUserByIdAsync(string? userId, bool? trackChanges);
         User UpdateOneUser(User user);
         User ChangePassword(User user);
         User DeleteOneUser(User user);

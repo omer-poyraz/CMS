@@ -29,7 +29,7 @@ namespace Services
         public async Task<FilesDto> DeleteFilesAsync(int id, bool? trackChanges)
         {
             var files = await _manager.FilesRepository.GetFilesByIdAsync(id, trackChanges);
-            _manager.FilesRepository.DeleteFiles(files);
+            _manager.FilesRepository.DeleteFiles(files!);
             await _manager.SaveAsync();
             return _mapper.Map<FilesDto>(files);
         }
@@ -47,12 +47,6 @@ namespace Services
             return _mapper.Map<IEnumerable<FilesDto>>(filess);
         }
 
-        public async Task<IEnumerable<FilesDto>> GetAllFilessWaterMarkedsync(bool waterMarked, bool? trackChanges)
-        {
-            var files = await _manager.FilesRepository.GetAllFilessByWaterMarkedAsync(waterMarked, trackChanges);
-            return _mapper.Map<IEnumerable<FilesDto>>(files);
-        }
-
         public async Task<FilesDto> GetFilesByIdAsync(int id, bool? trackChanges)
         {
             var files = await _manager.FilesRepository.GetFilesByIdAsync(id, trackChanges);
@@ -63,7 +57,7 @@ namespace Services
         {
             var files = await _manager.FilesRepository.GetFilesByIdAsync(filesDtoForUpdate.ID, false);
             _mapper.Map(filesDtoForUpdate, files);
-            _manager.FilesRepository.UpdateFiles(files);
+            _manager.FilesRepository.UpdateFiles(files!);
             await _manager.SaveAsync();
             return _mapper.Map<FilesDto>(files);
         }

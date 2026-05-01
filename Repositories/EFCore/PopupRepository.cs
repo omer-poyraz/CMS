@@ -20,15 +20,14 @@ namespace Repositories.EFCore
             return popup;
         }
 
-        public async Task<IEnumerable<Popup>> GetAllPopupsAsync(bool? trackChanges)
-        {
-            return await FindAll(trackChanges).OrderBy(s => s.ID).ToListAsync();
-        }
+        public async Task<IEnumerable<Popup>> GetAllPopupsAsync(bool? trackChanges) =>
+            await FindAll(trackChanges)
+                .OrderBy(s => s.ID)
+                .ToListAsync();
 
-        public async Task<Popup> GetPopupByIdAsync(int id, bool? trackChanges)
-        {
-            return await FindByCondition(s => s.ID.Equals(id), trackChanges).SingleOrDefaultAsync();
-        }
+        public async Task<Popup?> GetPopupByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(s => s.ID.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
 
         public Popup UpdatePopup(Popup popup)
         {

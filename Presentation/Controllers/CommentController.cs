@@ -4,13 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
-using Services.Extensions;
 
 namespace Presentation.Controllers
 {
-    /// <summary>
-    /// CMS comment içeriklerinin yönetimi için controller (comment yanıtları, anket sonuçları vb.)
-    /// </summary>
     [ApiController]
     [Route("api/Comment")]
     public class CommentController : ControllerBase
@@ -24,26 +20,8 @@ namespace Presentation.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        /// <summary>
-        /// Tüm comment içerik yanıtlarını listeler
-        /// </summary>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     GET /api/Comment/GetAll
-        ///     
-        ///     Bu endpoint sistemdeki tüm comment içerik yanıtlarını listeler.
-        ///     Örneğin:
-        ///     - Comment yanıtları
-        ///     - Anket sonuçları
-        ///     - İletişim commentu mesajları
-        ///     - Kullanıcı geri bildirimleri
-        /// </remarks>
-        /// <response code="200">İçerik yanıtları başarıyla listelendi</response>
-        /// <response code="500">Sunucu hatası</response>
         [HttpGet("GetAll")]
-        // [AuthorizePermission("Comment", "Read")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetAllCommentsAsync()
         {
             try
@@ -57,26 +35,8 @@ namespace Presentation.Controllers
             }
         }
 
-        /// <summary>
-        /// Belirtilen ID'ye sahip comment içerik yanıtını getirir
-        /// </summary>
-        /// <param name="id">İçerik yanıtı ID'si</param>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     GET /api/Comment/Get/1
-        ///     
-        ///     Bu endpoint belirtilen ID'ye sahip içerik yanıtını getirir.
-        ///     Örneğin:
-        ///     - Belirli bir comment yanıtının detayları
-        ///     - Spesifik bir anket katılımcısının cevapları
-        ///     - Tek bir iletişim commentu mesajı
-        /// </remarks>
-        /// <response code="200">İçerik yanıtı başarıyla getirildi</response>
-        /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpGet("Get/{id:int}")]
-        // [AuthorizePermission("Comment", "Read")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetOneCommentByIdAsync([FromRoute] int id)
         {
             try
@@ -90,26 +50,8 @@ namespace Presentation.Controllers
             }
         }
 
-        /// <summary>
-        /// Belirtilen ID'ye sahip comment içerik yanıtını getirir
-        /// </summary>
-        /// <param name="id">İçerik yanıtı ID'si</param>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     GET /api/Comment/Get/1
-        ///     
-        ///     Bu endpoint belirtilen ID'ye sahip içerik yanıtını getirir.
-        ///     Örneğin:
-        ///     - Belirli bir comment yanıtının detayları
-        ///     - Spesifik bir anket katılımcısının cevapları
-        ///     - Tek bir iletişim commentu mesajı
-        /// </remarks>
-        /// <response code="200">İçerik yanıtı başarıyla getirildi</response>
-        /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpGet("GetByUser/{userId}")]
-        // [AuthorizePermission("Comment", "Read")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Super Admin")]
         public async Task<IActionResult> GetOneCommentByUserIdAsync([FromRoute] string userId)
         {
             try
@@ -123,39 +65,7 @@ namespace Presentation.Controllers
             }
         }
 
-        /// <summary>
-        /// Yeni bir comment içerik yanıtı oluşturur
-        /// </summary>
-        /// <param name="comment">Comment verisi (Text ve Slug için çoklu dil desteği)</param>
-        /// <param name="commentDtoForInsertion">İçerik yanıtı bilgileri</param>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     POST /api/Comment/Create
-        ///     Content-Type: multipart/comment-data
-        ///     
-        ///     {
-        ///         "Text": {
-        ///             "TR": "Müşteri geri bildirimi içeriği",
-        ///             "EN": "Customer feedback content"
-        ///         },
-        ///         "Slug": {
-        ///             "TR": "musteri-geri-bildirimi",
-        ///             "EN": "customer-feedback"
-        ///         },
-        ///         "file": [binary_file_data] // Opsiyonel: Ek dosyalar
-        ///     }
-        ///     
-        ///     Bu endpoint yeni bir içerik yanıtı oluşturur:
-        ///     - Comment gönderimleri
-        ///     - Anket yanıtları
-        ///     - İletişim mesajları
-        ///     - Dosya ekleri ile birlikte geri bildirimler
-        /// </remarks>
-        /// <response code="200">İçerik yanıtı başarıyla oluşturuldu</response>
-        /// <response code="400">Geçersiz veri</response>
         [HttpPost("Create")]
-        // [AuthorizePermission("Comment", "Write")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CreateOneCommentAsync([FromBody] CommentDtoForInsertion commentDtoForInsertion)
         {
@@ -170,34 +80,7 @@ namespace Presentation.Controllers
             }
         }
 
-        /// <summary>
-        /// Mevcut bir comment içerik yanıtını günceller
-        /// </summary>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     PUT /api/Comment/Update
-        ///     Content-Type: multipart/comment-data
-        ///     
-        ///     {
-        ///         "ID": 1,
-        ///         "Text": {
-        ///             "TR": "Güncellenmiş yanıt",
-        ///             "EN": "Updated response"
-        ///         },
-        ///         "file": [binary_file_data] // Opsiyonel: Güncellenecek dosyalar
-        ///     }
-        ///     
-        ///     Bu endpoint mevcut bir içerik yanıtını günceller:
-        ///     - Comment yanıtlarında düzeltme
-        ///     - Anket cevaplarında güncelleme
-        ///     - Geri bildirimlerde değişiklik
-        ///     - Ek dosyaların güncellenmesi
-        /// </remarks>
-        /// <response code="200">İçerik yanıtı başarıyla güncellendi</response>
-        /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpPut("Update")]
-        // [AuthorizePermission("Comment", "Write")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateOneCommentAsync([FromBody] CommentDtoForUpdate commentDtoForUpdate)
         {
@@ -212,26 +95,7 @@ namespace Presentation.Controllers
             }
         }
 
-        /// <summary>
-        /// Belirtilen içerik yanıtını siler
-        /// </summary>
-        /// <param name="id">Silinecek içerik yanıtı ID'si</param>
-        /// <remarks>
-        /// Örnek istek:
-        /// 
-        ///     DELETE /api/Comment/Delete/1
-        ///     
-        ///     Bu endpoint belirtilen ID'ye sahip içerik yanıtını siler:
-        ///     - Comment yanıtlarının silinmesi
-        ///     - Anket sonuçlarının kaldırılması
-        ///     - Geri bildirimlerin temizlenmesi
-        ///     
-        ///     Dikkat: Bu işlem geri alınamaz ve ilişkili tüm dosyalar da silinir.
-        /// </remarks>
-        /// <response code="200">İçerik yanıtı başarıyla silindi</response>
-        /// <response code="404">İçerik yanıtı bulunamadı</response>
         [HttpDelete("Delete/{id:int}")]
-        // [AuthorizePermission("Comment", "Delete")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteOneCommentAsync([FromRoute] int id)
         {

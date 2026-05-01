@@ -21,13 +21,17 @@ namespace Repositories.EFCore
         }
 
         public async Task<IEnumerable<Comment>> GetAllCommentsAsync(bool? trackChanges) =>
-            await FindAll(trackChanges).OrderByDescending(s => s.ID).ToListAsync();
+            await FindAll(trackChanges)
+                .OrderByDescending(s => s.ID)
+                .ToListAsync();
 
-        public async Task<Comment> GetCommentByIdAsync(int id, bool? trackChanges) =>
-            await FindByCondition(s => s.ID.Equals(id), trackChanges).SingleOrDefaultAsync();
+        public async Task<Comment?> GetCommentByIdAsync(int id, bool? trackChanges) =>
+            await FindByCondition(s => s.ID.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
 
-        public async Task<Comment> GetCommentByUserIdAsync(string userId, bool? trackChanges) =>
-            await FindByCondition(s => s.UserId.Equals(userId), trackChanges).SingleOrDefaultAsync();
+        public async Task<Comment?> GetCommentByUserIdAsync(string userId, bool? trackChanges) =>
+            await FindByCondition(s => s.UserId!.Equals(userId), trackChanges)
+                .SingleOrDefaultAsync();
 
         public Comment UpdateComment(Comment comment)
         {

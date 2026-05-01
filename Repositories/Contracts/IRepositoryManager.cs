@@ -10,11 +10,7 @@
         IMenuRepository MenuRepository { get; }
         IMenuGroupRepository MenuGroupRepository { get; }
         IPageRepository PageRepository { get; }
-        IPageSectionRepository PageSectionRepository { get; }
-        IPageTranslationRepository PageTranslationRepository { get; }
         IPopupRepository PopupRepository { get; }
-        ISectionFieldRepository SectionFieldRepository { get; }
-        ISectionItemRepository SectionItemRepository { get; }
         ISettingsRepository SettingsRepository { get; }
         IUserRepository UserRepository { get; }
         Task SaveAsync();

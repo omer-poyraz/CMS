@@ -8,8 +8,7 @@ namespace Repositories.Contracts
     {
         Task<PagedList<Files>> GetAllFilesAsync(FilesParameters filesParameters, bool? trackChanges);
         Task<IEnumerable<Files>> GetAllFilessByFileTypeAsync(string fileType, bool? trackChanges);
-        Task<IEnumerable<Files>> GetAllFilessByWaterMarkedAsync(bool waterMarked, bool? trackChanges);
-        Task<Files> GetFilesByIdAsync(int id, bool? trackChanges);
+        Task<Files?> GetFilesByIdAsync(int id, bool? trackChanges);
         Files CreateFiles(Files files);
         Files UpdateFiles(Files files);
         Files DeleteFiles(Files files);

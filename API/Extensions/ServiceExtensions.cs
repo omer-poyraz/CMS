@@ -3,6 +3,7 @@ using System.Text;
 using Entities.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -55,26 +56,23 @@ namespace API.Extensions
             services.AddScoped<IPageRepository, PageRepository>();
             services.AddScoped<IPageService, PageService>();
 
-            services.AddScoped<IPageTranslationRepository, PageTranslationRepository>();
-            services.AddScoped<IPageTranslationService, PageTranslationService>();
-
-            services.AddScoped<IPageSectionRepository, PageSectionRepository>();
-            services.AddScoped<IPageSectionService, PageSectionService>();
-
             services.AddScoped<IPopupRepository, PopupRepository>();
             services.AddScoped<IPopupService, PopupService>();
-
-            services.AddScoped<ISectionFieldRepository, SectionFieldRepository>();
-            services.AddScoped<ISectionFieldService, SectionFieldService>();
-
-            services.AddScoped<ISectionItemRepository, SectionItemRepository>();
-            services.AddScoped<ISectionItemService, SectionItemService>();
 
             services.AddScoped<ISettingsRepository, SettingsRepository>();
             services.AddScoped<ISettingsService, SettingsService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddRateLimiter(_ =>
+            {
+                _.AddFixedWindowLimiter("fixed", options =>
+                {
+                    options.PermitLimit = 30;
+                    options.Window = TimeSpan.FromMinutes(1);
+                });
+            });
 
 
             services.AddCors(opt =>
@@ -84,9 +82,12 @@ namespace API.Extensions
                     build =>
                         build
                             .AllowAnyHeader()
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
+                            .AllowCredentials()
+                            .SetPreflightMaxAge(TimeSpan.FromHours(1))
                             .WithExposedHeaders("X-Pagination")
+                            .WithOrigins(
+                                "http://localhost:3000"
+                            )
                 );
             });
         }
@@ -97,7 +98,9 @@ namespace API.Extensions
                 .AddIdentity<User, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = true;
-                    options.Password.RequiredLength = 8;
+                    options.Password.RequiredLength = 10;
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = true;
                     options.Password.RequireLowercase = true;
@@ -126,10 +129,32 @@ namespace API.Extensions
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero,
+                        RequireExpirationTime = true,
                         ValidIssuer = jwtSettings["validIssuer"],
                         ValidAudience = jwtSettings["validAudience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
                     };
+                    opt.Events = new JwtBearerEvents
+                    {
+                        OnChallenge = async context =>
+                        {
+                            context.HandleResponse();
+
+                            context.Response.StatusCode = 401;
+                            context.Response.Headers["Access-Control-Allow-Origin"] = "http://localhost:3000";
+
+                            await context.Response.WriteAsync("Unauthorized");
+                        },
+                        OnForbidden = async context =>
+                        {
+                            context.Response.StatusCode = 403;
+                            context.Response.Headers["Access-Control-Allow-Origin"] = "http://localhost:3000";
+
+                            await context.Response.WriteAsync("Forbidden");
+                        }
+                    };
+
                 });
         }
 

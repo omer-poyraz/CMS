@@ -11,12 +11,7 @@ namespace Entities.Response
         public T? Result { get; }
         public bool IsSuccess { get; }
 
-        private ApiResponse(
-            IHttpContextAccessor httpContextAccessor,
-            string message,
-            int statusCode,
-            T? result,
-            bool isSuccess)
+        private ApiResponse(IHttpContextAccessor httpContextAccessor, string message, int statusCode, T? result, bool isSuccess)
         {
             _httpContextAccessor = httpContextAccessor;
             Message = message;

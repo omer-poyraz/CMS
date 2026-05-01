@@ -32,7 +32,7 @@ namespace Services
         public async Task<CommentDto> DeleteCommentAsync(int id, bool? trackChanges)
         {
             var comment = await _manager.CommentRepository.GetCommentByIdAsync(id, trackChanges);
-            _manager.CommentRepository.DeleteComment(comment);
+            _manager.CommentRepository.DeleteComment(comment!);
             await _manager.SaveAsync();
             return _mapper.Map<CommentDto>(comment);
         }
@@ -59,7 +59,7 @@ namespace Services
         {
             var comment = await _manager.CommentRepository.GetCommentByIdAsync(commentDtoForUpdate.ID, false);
             _mapper.Map(commentDtoForUpdate, comment);
-            _manager.CommentRepository.UpdateComment(comment);
+            _manager.CommentRepository.UpdateComment(comment!);
             await _manager.SaveAsync();
             return _mapper.Map<CommentDto>(comment);
         }

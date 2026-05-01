@@ -11,8 +11,6 @@ using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Repositories.Contracts;
-using Repositories.EFCore;
 
 namespace Services
 {
@@ -20,27 +18,16 @@ namespace Services
     {
         private readonly IMailService _mailService;
         private readonly IMemoryCache _cache;
-        private readonly RepositoryContext _context;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly IRepositoryManager _manager;
         private User? _user;
 
-        public AuthenticationService(
-            IMapper mapper,
-            UserManager<User> userManager,
-            IConfiguration configuration,
-            RepositoryContext context,
-            IRepositoryManager manager,
-            IMailService mailService,
-            IMemoryCache cache)
+        public AuthenticationService(IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IMailService mailService, IMemoryCache cache)
         {
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
-            _context = context;
-            _manager = manager;
             _mailService = mailService;
             _cache = cache;
         }
@@ -58,7 +45,7 @@ namespace Services
 
             var refreshToken = GenerateRefreshToken();
             _user.RefreshToken = refreshToken;
-            _user.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(7);
+            _user.RefreshTokenExpireTime = DateTime.UtcNow.AddMinutes(5);
 
             await _userManager.UpdateAsync(_user);
 
@@ -185,21 +172,11 @@ namespace Services
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
 
-            var principal = tokenHandler.ValidateToken(
-                accessToken,
-                tokenValidationParameters,
-                out securityToken
-            );
+            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out securityToken);
 
             var jwtSecurityToken = securityToken as JwtSecurityToken;
 
-            if (
-                jwtSecurityToken == null
-                || !jwtSecurityToken.Header.Alg.Equals(
-                    SecurityAlgorithms.HmacSha256,
-                    StringComparison.InvariantCultureIgnoreCase
-                )
-            )
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid Token!");
             }
@@ -241,11 +218,12 @@ namespace Services
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
+            // Token süresi 5 dakika
             var tokenOptions = new JwtSecurityToken(
                 issuer: jwtSettings["validIssuer"],
                 audience: jwtSettings["validAudience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(Convert.ToDouble(jwtSettings["expires"])),
+                expires: DateTime.UtcNow.AddMinutes(5),
                 signingCredentials: signingCredentials
             );
             return tokenOptions;

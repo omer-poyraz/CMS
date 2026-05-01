@@ -33,7 +33,7 @@ namespace Services
         public async Task<LogDto> DeleteLogAsync(int id, bool? trackChanges)
         {
             var log = await _manager.LogRepository.GetLogByIdAsync(id, trackChanges);
-            _manager.LogRepository.DeleteLog(log);
+            _manager.LogRepository.DeleteLog(log!);
             await _manager.SaveAsync();
             return _mapper.Map<LogDto>(log);
         }

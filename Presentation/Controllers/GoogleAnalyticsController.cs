@@ -25,7 +25,6 @@
 //         /// Google Analytics verilerini rapor olarak getirir
 //         /// </summary>
 //         [HttpPost("GetReport")]
-//         // [AuthorizePermission("GoogleAnalytics", "Read")]
 //         [Authorize(AuthenticationSchemes = "Bearer")]
 //         public async Task<IActionResult> GetReportAsync([FromBody] AnalyticsReportRequest request)
 //         {
@@ -44,7 +43,6 @@
 //         /// Google Analytics özet verilerini getirir
 //         /// </summary>
 //         [HttpGet("GetSummary")]
-//         // [AuthorizePermission("GoogleAnalytics", "Read")]
 //         [Authorize(AuthenticationSchemes = "Bearer")]
 //         public async Task<IActionResult> GetSummaryAsync([FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null)
 //         {
