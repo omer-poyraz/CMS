@@ -21,11 +21,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> GetOneSettingsByIdAsync()
+        public async Task<IActionResult> GetOneSettingsByIdAsync([FromQuery] string? lang)
         {
             try
             {
-                var user = await _manager.SettingsService.GetSettingsAsync(false);
+                var user = await _manager.SettingsService.GetSettingsAsync(lang, false);
                 return Ok(ApiResponse<SettingsDto>.CreateSuccess(_httpContextAccessor, user, "Success.Retrieved"));
             }
             catch (Exception ex)

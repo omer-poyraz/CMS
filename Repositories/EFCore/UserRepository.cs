@@ -26,7 +26,7 @@ namespace Repositories.EFCore
         public async Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool? trackChanges)
         {
             var users = await FindAll(trackChanges)
-                .OrderBy(u => u.Id)
+                .OrderByDescending(u => u.Id)
                 .Include(r => r.Roles)
                 .SearchUser(userParameters.SearchTerm!)
                 .ToListAsync();
@@ -38,7 +38,7 @@ namespace Repositories.EFCore
         {
             var users = await FindAll(trackChanges)
                 .Where(u => u.Active == false)
-                .OrderBy(u => u.Id)
+                .OrderByDescending(u => u.Id)
                 .Include(r => r.Roles)
                 .SearchUser(userParameters.SearchTerm!)
                 .ToListAsync();

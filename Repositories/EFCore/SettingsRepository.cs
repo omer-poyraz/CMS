@@ -20,18 +20,45 @@ namespace Repositories.EFCore
             return settings;
         }
 
-        public async Task<IEnumerable<Settings>> GetAllSettingsAsync(bool? trackChanges) =>
+        public async Task<IEnumerable<Settings>> GetAllSettingsAsync(string? lang, bool? trackChanges) =>
             await FindAll(trackChanges)
-                .OrderBy(s => s.ID)
+                .OrderByDescending(s => s.ID)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Logos)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Theme)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Contacts)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Contracts)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Locations)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.References)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.SocialMedias)
                 .ToListAsync();
 
         public async Task<Settings?> GetSettingsByIdAsync(int id, bool? trackChanges) =>
             await FindByCondition(s => s.ID.Equals(id), trackChanges)
                 .FirstOrDefaultAsync();
 
-        public async Task<Settings?> GetSettingsAsync(bool? trackChanges) =>
+        public async Task<Settings?> GetSettingsAsync(string? lang, bool? trackChanges) =>
             await FindAll(trackChanges)
-                .OrderByDescending(s => s.ID)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Logos)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Theme)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Contacts)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Contracts)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.Locations)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.References)
+                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                    .ThenInclude(t => t.SocialMedias)
                 .FirstOrDefaultAsync();
 
         public Settings UpdateSettings(Settings settings)

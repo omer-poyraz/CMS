@@ -47,6 +47,8 @@ namespace API.Extensions
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<ILogService, LogService>();
 
+            services.AddScoped<IMailTemplateService, MailTemplateService>();
+
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IMenuService, MenuService>();
 

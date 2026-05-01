@@ -25,14 +25,18 @@ namespace Repositories.EFCore
 
         public async Task<PagedList<Files>> GetAllFilesAsync(FilesParameters filesParameters, bool? trackChanges)
         {
-            var files = await FindAll(trackChanges).OrderBy(s => s.ID).SearchFile(filesParameters.SearchTerm!).ToListAsync();
+            var files = await FindAll(trackChanges)
+                .OrderByDescending(s => s.ID)
+                .SearchFile(filesParameters.SearchTerm!)
+                .ToListAsync();
+
             return PagedList<Files>.ToPagedList(files, filesParameters.PageNumber, filesParameters.PageSize);
         }
 
         public async Task<IEnumerable<Files>> GetAllFilessByFileTypeAsync(string fileType, bool? trackChanges) =>
             await FindAll(trackChanges)
                 .Where(s => s.FileType!.ToLower().Equals(fileType.ToLower()))
-                .OrderBy(s => s.ID)
+                .OrderByDescending(s => s.ID)
                 .ToListAsync();
 
         public async Task<Files?> GetFilesByIdAsync(int id, bool? trackChanges) =>

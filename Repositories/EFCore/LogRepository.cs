@@ -25,7 +25,10 @@ namespace Repositories.EFCore
 
         public async Task<PagedList<Log>> GetAllLogsAsync(LogEntryParameters logParameters, bool? trackChanges)
         {
-            var logs = await FindAll(trackChanges).OrderByDescending(s => s.ID).SearchLog(logParameters.SearchTerm!).ToListAsync();
+            var logs = await FindAll(trackChanges)
+                .OrderByDescending(s => s.ID)
+                .SearchLog(logParameters.SearchTerm!)
+                .ToListAsync();
             return PagedList<Log>.ToPagedList(logs, logParameters.PageNumber, logParameters.PageSize);
         }
 

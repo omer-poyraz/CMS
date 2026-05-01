@@ -22,7 +22,7 @@ namespace Repositories.EFCore
 
         public async Task<IEnumerable<Language>> GetAllLanguagesAsync(bool? trackChanges) =>
             await FindAll(trackChanges)
-                .OrderBy(s => s.ID)
+                .OrderByDescending(s => s.ID)
                 .ToListAsync();
 
         public async Task<Language?> GetLanguageByIdAsync(int id, bool? trackChanges) =>

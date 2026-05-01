@@ -22,7 +22,7 @@ namespace Repositories.EFCore
 
         public async Task<IEnumerable<GoogleAnalytics>> GetAllGoogleAnalyticsAsync(bool? trackChanges) =>
             await FindAll(trackChanges)
-                .OrderBy(ga => ga.ID)
+                .OrderByDescending(ga => ga.ID)
                 .ToListAsync();
 
         public async Task<GoogleAnalytics?> GetGoogleAnalyticsByIdAsync(int id, bool? trackChanges) =>
@@ -31,6 +31,7 @@ namespace Repositories.EFCore
 
         public async Task<GoogleAnalytics?> GetActiveGoogleAnalyticsAsync(bool? trackChanges) =>
             await FindByCondition(ga => ga.Active.Equals(true), trackChanges)
+                .OrderByDescending(ga => ga.ID)
                 .FirstOrDefaultAsync();
 
         public GoogleAnalytics UpdateGoogleAnalytics(GoogleAnalytics googleAnalytics)

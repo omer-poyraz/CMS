@@ -33,9 +33,9 @@ namespace Services
             return _mapper.Map<SettingsDto>(settingsGroup);
         }
 
-        public async Task<IEnumerable<SettingsDto>> GetAllSettingsAsync(bool? trackChanges)
+        public async Task<IEnumerable<SettingsDto>> GetAllSettingsAsync(string? lang, bool? trackChanges)
         {
-            var settingsGroup = await _manager.SettingsRepository.GetAllSettingsAsync(trackChanges);
+            var settingsGroup = await _manager.SettingsRepository.GetAllSettingsAsync(lang, trackChanges);
             return _mapper.Map<IEnumerable<SettingsDto>>(settingsGroup);
         }
 
@@ -45,15 +45,15 @@ namespace Services
             return _mapper.Map<SettingsDto>(settingsGroup);
         }
 
-        public async Task<SettingsDto> GetSettingsAsync(bool? trackChanges)
+        public async Task<SettingsDto> GetSettingsAsync(string? lang, bool? trackChanges)
         {
-            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(trackChanges);
+            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(lang, trackChanges);
             return _mapper.Map<SettingsDto>(settingsGroup);
         }
 
         public async Task<SettingsDto> UpdateSettingsAsync(SettingsDtoForUpdate settingsGroupDtoForUpdate)
         {
-            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(false);
+            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(null!, false);
             _mapper.Map(settingsGroupDtoForUpdate, settingsGroup);
             _manager.SettingsRepository.UpdateSettings(settingsGroup!);
             await _manager.SaveAsync();

@@ -1,9 +1,11 @@
 namespace Entities.Models
 {
-    public class Settings
+    public class Reference
     {
         public int ID { get; set; }
-        public ICollection<SettingsTranslation>? Translations { get; set; }
+        public string? Files { get; set; }
+        public string? Title { get; set; }
+        public string? Url { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

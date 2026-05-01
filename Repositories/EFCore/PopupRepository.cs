@@ -22,7 +22,7 @@ namespace Repositories.EFCore
 
         public async Task<IEnumerable<Popup>> GetAllPopupsAsync(bool? trackChanges) =>
             await FindAll(trackChanges)
-                .OrderBy(s => s.ID)
+                .OrderByDescending(s => s.ID)
                 .ToListAsync();
 
         public async Task<Popup?> GetPopupByIdAsync(int id, bool? trackChanges) =>

@@ -15,19 +15,27 @@ namespace Repositories.EFCore
         }
 
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
         public DbSet<Files> Filess { get; set; }
         public DbSet<GoogleAnalytics> GaoogleAnalytics { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<Location> Locations { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Logo> Logos { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuGroup> MenuGroups { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<PageSection> PageSections { get; set; }
         public DbSet<PageTranslation> PageTranslations { get; set; }
         public DbSet<Popup> Popups { get; set; }
+        public DbSet<Reference> References { get; set; }
         public DbSet<SectionField> SectionFields { get; set; }
         public DbSet<SectionItem> SectionItems { get; set; }
         public DbSet<Settings> Settings { get; set; }
+        public DbSet<SettingsTranslation> SettingsTranslations { get; set; }
+        public DbSet<SocialMedia> SocialMedias { get; set; }
+        public DbSet<Theme> Themes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

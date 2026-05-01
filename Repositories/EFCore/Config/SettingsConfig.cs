@@ -12,15 +12,6 @@ namespace Repositories.EFCore.Config
             builder.HasData(new Settings
             {
                 ID = 1,
-                SiteName = { },
-                Meta = { },
-                Theme = { },
-                Contact = { },
-                Location = { },
-                Menu = { },
-                Footer = { },
-                References = { },
-                SocialMedias = { },
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             });

@@ -22,14 +22,14 @@ namespace Repositories.EFCore
 
         public async Task<IEnumerable<Menu>> GetAllMenusAsync(string lang, bool? trackChanges) =>
             await FindAll(trackChanges)
-                .OrderBy(s => s.ID)
+                .OrderByDescending(s => s.ID)
                 .Include(s => s.Translations!.Where(t => t.Lang == lang))
                 .ToListAsync();
 
         public async Task<IEnumerable<Menu>> GetAllMenusByGroupAsync(int id, string lang, bool? trackChanges) =>
             await FindAll(trackChanges)
                 .Where(s => s.MenuGroupID != null && s.MenuGroupID == id)
-                .OrderBy(s => s.ID)
+                .OrderByDescending(s => s.ID)
                 .Include(s => s.Translations!.Where(t => t.Lang == lang))
                 .ToListAsync();
 
