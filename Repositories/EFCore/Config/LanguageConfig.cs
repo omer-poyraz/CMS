@@ -9,6 +9,11 @@ namespace Repositories.EFCore.Config
         public void Configure(EntityTypeBuilder<Language> builder)
         {
             builder.HasKey(s => s.ID);
+
+            builder.HasMany(s => s.Translations)
+                .WithOne(t => t.Language)
+                .HasForeignKey(t => t.LanguageID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

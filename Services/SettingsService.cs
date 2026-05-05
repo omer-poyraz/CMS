@@ -11,6 +11,24 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
 
+        private static string? NormalizeLanguage(string? lang) =>
+            string.IsNullOrWhiteSpace(lang) ? null : lang.Trim().ToLowerInvariant();
+
+        private static void NormalizeTranslations(SettingsDtoForUpdate settingsDtoForUpdate)
+        {
+            if (settingsDtoForUpdate.Translations == null)
+            {
+                return;
+            }
+
+            foreach (var translation in settingsDtoForUpdate.Translations)
+            {
+                translation.Lang = NormalizeLanguage(translation.Lang);
+                translation.Settings = null;
+                translation.SettingsID = settingsDtoForUpdate.ID;
+            }
+        }
+
         public SettingsService(IRepositoryManager manager, IMapper mapper)
         {
             _manager = manager;
@@ -35,7 +53,8 @@ namespace Services
 
         public async Task<IEnumerable<SettingsDto>> GetAllSettingsAsync(string? lang, bool? trackChanges)
         {
-            var settingsGroup = await _manager.SettingsRepository.GetAllSettingsAsync(lang, trackChanges);
+            var normalizedLang = NormalizeLanguage(lang);
+            var settingsGroup = await _manager.SettingsRepository.GetAllSettingsAsync(normalizedLang, trackChanges);
             return _mapper.Map<IEnumerable<SettingsDto>>(settingsGroup);
         }
 
@@ -47,13 +66,15 @@ namespace Services
 
         public async Task<SettingsDto> GetSettingsAsync(string? lang, bool? trackChanges)
         {
-            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(lang, trackChanges);
+            var normalizedLang = NormalizeLanguage(lang);
+            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(normalizedLang, trackChanges);
             return _mapper.Map<SettingsDto>(settingsGroup);
         }
 
         public async Task<SettingsDto> UpdateSettingsAsync(SettingsDtoForUpdate settingsGroupDtoForUpdate)
         {
-            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(null!, false);
+            NormalizeTranslations(settingsGroupDtoForUpdate);
+            var settingsGroup = await _manager.SettingsRepository.GetSettingsAsync(null!, true);
             _mapper.Map(settingsGroupDtoForUpdate, settingsGroup);
             _manager.SettingsRepository.UpdateSettings(settingsGroup!);
             await _manager.SaveAsync();

@@ -21,11 +21,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllLanguagesAsync()
+        public async Task<IActionResult> GetAllLanguagesAsync([FromQuery] string lang)
         {
             try
             {
-                var contents = await _manager.LanguageService.GetAllLanguagesAsync(false);
+                var contents = await _manager.LanguageService.GetAllLanguagesAsync(lang, false);
                 return Ok(ApiResponse<IEnumerable<LanguageDto>>.CreateSuccess(_httpContextAccessor, contents, "Success.Listed"));
             }
             catch (Exception ex)
@@ -35,25 +35,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("Get/{id:int}")]
-        public async Task<IActionResult> GetOneLanguageByIdAsync([FromRoute] int id)
+        public async Task<IActionResult> GetOneLanguageByIdAsync([FromRoute] int id, [FromQuery] string lang)
         {
             try
             {
-                var content = await _manager.LanguageService.GetLanguageByIdAsync(id, false);
-                return Ok(ApiResponse<LanguageDto>.CreateSuccess(_httpContextAccessor, content, "Success.Retrieved"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { statusCode = 400, message = ex.Message });
-            }
-        }
-
-        [HttpGet("GetCode/{code}")]
-        public async Task<IActionResult> GetOneLanguageByCodeAsync([FromRoute] string code)
-        {
-            try
-            {
-                var content = await _manager.LanguageService.GetLanguageByCodeAsync(code, false);
+                var content = await _manager.LanguageService.GetLanguageByIdAsync(id, lang, false);
                 return Ok(ApiResponse<LanguageDto>.CreateSuccess(_httpContextAccessor, content, "Success.Retrieved"));
             }
             catch (Exception ex)

@@ -1,9 +1,9 @@
-﻿namespace Entities.DTOs.LanguageDto
+﻿using Entities.Models;
+
+namespace Entities.DTOs.LanguageDto
 {
     public abstract record LanguageDtoForManipulation
     {
-        public string? Flag { get; init; }
-        public string? Code { get; init; }
-        public string? ZipCode { get; init; }
+        public ICollection<LanguageTranslation>? Translations { get; init; }
     }
 }

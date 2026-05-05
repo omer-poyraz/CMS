@@ -26,33 +26,27 @@ namespace Services
 
         public async Task<LanguageDto> DeleteLanguageAsync(int id, bool? trackChanges)
         {
-            var language = await _manager.LanguageRepository.GetLanguageByIdAsync(id, trackChanges);
+            var language = await _manager.LanguageRepository.GetLanguageByIdAsync(id, "tr", trackChanges);
             _manager.LanguageRepository.DeleteLanguage(language!);
             await _manager.SaveAsync();
             return _mapper.Map<LanguageDto>(language);
         }
 
-        public async Task<IEnumerable<LanguageDto>> GetAllLanguagesAsync(bool? trackChanges)
+        public async Task<IEnumerable<LanguageDto>> GetAllLanguagesAsync(string lang, bool? trackChanges)
         {
-            var language = await _manager.LanguageRepository.GetAllLanguagesAsync(trackChanges);
+            var language = await _manager.LanguageRepository.GetAllLanguagesAsync(lang, trackChanges);
             return _mapper.Map<IEnumerable<LanguageDto>>(language);
         }
 
-        public async Task<LanguageDto> GetLanguageByIdAsync(int id, bool? trackChanges)
+        public async Task<LanguageDto> GetLanguageByIdAsync(int id, string lang, bool? trackChanges)
         {
-            var language = await _manager.LanguageRepository.GetLanguageByIdAsync(id, trackChanges);
-            return _mapper.Map<LanguageDto>(language);
-        }
-
-        public async Task<LanguageDto> GetLanguageByCodeAsync(string code, bool? trackChanges)
-        {
-            var language = await _manager.LanguageRepository.GetLanguageByCodeAsync(code, trackChanges);
+            var language = await _manager.LanguageRepository.GetLanguageByIdAsync(id, lang, trackChanges);
             return _mapper.Map<LanguageDto>(language);
         }
 
         public async Task<LanguageDto> UpdateLanguageAsync(LanguageDtoForUpdate languageDtoForUpdate)
         {
-            var language = await _manager.LanguageRepository.GetLanguageByIdAsync(languageDtoForUpdate.ID, false);
+            var language = await _manager.LanguageRepository.GetLanguageByIdAsync(languageDtoForUpdate.ID, "tr", false);
             _mapper.Map(languageDtoForUpdate, language);
             _manager.LanguageRepository.UpdateLanguage(language!);
             await _manager.SaveAsync();

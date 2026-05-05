@@ -23,19 +23,19 @@ namespace Repositories.EFCore
         public async Task<IEnumerable<Settings>> GetAllSettingsAsync(string? lang, bool? trackChanges) =>
             await FindAll(trackChanges)
                 .OrderByDescending(s => s.ID)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Logos)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Theme)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Contacts)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Contracts)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Locations)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.References)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.SocialMedias)
                 .ToListAsync();
 
@@ -45,19 +45,19 @@ namespace Repositories.EFCore
 
         public async Task<Settings?> GetSettingsAsync(string? lang, bool? trackChanges) =>
             await FindAll(trackChanges)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Logos)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Theme)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Contacts)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Contracts)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.Locations)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.References)
-                .Include(s => s.Translations!.Where(t => t.Lang == lang))!
+                .Include(s => s.Translations!.Where(t => string.IsNullOrWhiteSpace(lang) || t.Lang == lang))!
                     .ThenInclude(t => t.SocialMedias)
                 .FirstOrDefaultAsync();
 

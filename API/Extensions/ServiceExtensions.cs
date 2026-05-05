@@ -84,6 +84,7 @@ namespace API.Extensions
                     build =>
                         build
                             .AllowAnyHeader()
+                            .AllowAnyMethod()
                             .AllowCredentials()
                             .SetPreflightMaxAge(TimeSpan.FromHours(1))
                             .WithExposedHeaders("X-Pagination")
